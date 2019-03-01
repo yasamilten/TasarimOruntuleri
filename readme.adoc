@@ -97,16 +97,12 @@ Go to main first title in page <<AnaBaslik,İlk başlık>>.
 
 Go to admonitions in page <<Admonition,Admonitions>>
 
+* Images
 
+image::images/cat_1.jpg[]
 
-
-
-
-[.result]
-====
-[[bookmark-a]]Inline anchors make arbitrary content referenceable.
-
-anchor:bookmark-b[]Use a cross reference to link to this location.
-====
-
+.Where is it looking ?
+[#img-cat]
+[caption="Cat 2: ",link=https://www.hillspet.com/cat-care/cat-breeds/russian-blue]
+image::images/cat_2.jpg[Sunset,300,200]
 
