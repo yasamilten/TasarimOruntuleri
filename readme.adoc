@@ -1,1 +1,58 @@
 
+= İki şey sonsuzdur; İnsanoğlunun aptallığı ve evren. Fakat ikincisinden emin değilim (Albert Einstein)
+
+== Azim paha biçilmezdir, Çok zeki olduğumdan değil, sorunlarla uğraşmaktan vazgeçmediğimden başarıyorum(Albert Einstein)
+
+***
+
+====
+LINUX
+
+.  Linux, UNIX benzeri, açık kaynak kodlu bir işletim
+sistemidir.
+
+. Çoğunlukla Linux denilse de, daha doğrusu GNU/Linux
+demektir. Çünkü, linux çekirdeğin adıdır, geri kalan
+herşey GNU projesi ile başlamıştır.
+
+. Linux'ta her dosya ya da dizin bir başka dizinin içinde
+bulunmak zorundadır.
+
+
+
+Linux dizin yapısı
+
+* Ev dizinleri genelde /home dizini içinde yer alır.
+
+* Pek çok komut /bin ve /sbin dizinindedir.
+
+* Geçici dosyalar /tmp dizininde tutulur.
+
+* Programlar genelde /usr ve /opt dizinlerinde tutulur.
+
+* Sistemin ayar dosyaları /etc dizinindedir.
+
+* Tüm donanımlar da bu ağaç yapısına bir dosya olarak
+bağlanırlar (Genelde /dev dizininde).
+
+
+====
+
+====
+IMPORTANT: This is important for you...
+
+WARNING: This is warning for you...
+
+NOTE: This is note for you...
+
+====
+
+
+====
+
+LINKS
+
+====
+
+
+
