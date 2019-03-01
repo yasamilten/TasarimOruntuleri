@@ -93,7 +93,5 @@ anchor:bookmark-c[]Use a cross reference to link to this location.
 
 * Internal cross
 
-See <<AnaBaslik>> to learn how to write paragraphs.
-
-Learn how to organize the document into <<AnaBaslik,sections>>.
+Sayfada bulunan ilk başlığa git <<AnaBaslik,İlk başlık>>.
 
