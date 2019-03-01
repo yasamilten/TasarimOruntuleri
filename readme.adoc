@@ -93,7 +93,7 @@ anchor:bookmark-c[]Use a cross reference to link to this location.
 
 * Internal cross
 
-Go to main first title in page <<AnaBaslik,İlk başlık>>.
+Go to first title in page <<AnaBaslik,İlk başlık>>.
 
 Go to admonitions in page <<Admonition,Admonitions>>
 
