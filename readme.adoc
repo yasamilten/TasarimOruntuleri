@@ -99,10 +99,10 @@ Go to admonitions in page <<Admonition,Admonitions>>
 
 * Images
 
-image::images/cat_1.jpg[]
+image::cat_1.jpg[]
 
 .Where is it looking ?
 [#img-cat]
 [caption="Cat 2: ",link=https://www.hillspet.com/cat-care/cat-breeds/russian-blue]
-image::images/cat_2.jpg[Sunset,300,200]
+image::cat_2.jpg[Sunset,300,200]
 
