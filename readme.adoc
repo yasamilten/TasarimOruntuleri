@@ -120,5 +120,7 @@ VIDEOS
 
 video::pasta.mp4[]
 
+* Embedded
 
+video::6rLq0XpUhdA[youtube]
 
