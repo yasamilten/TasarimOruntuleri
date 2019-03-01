@@ -1,3 +1,4 @@
+
 = İki şey sonsuzdur; İnsanoğlunun aptallığı ve evren. Fakat ikincisinden emin değilim (Albert Einstein)
 
 == Azim paha biçilmezdir, Çok zeki olduğumdan değil, sorunlarla uğraşmaktan vazgeçmediğimden başarıyorum(Albert Einstein)
@@ -37,6 +38,7 @@ bağlanırlar (Genelde /dev dizininde).
 
 ====
 
+
 ====
 IMPORTANT: This is important for you...
 
@@ -45,6 +47,9 @@ WARNING: This is warning for you...
 NOTE: This is note for you...
 
 ====
+
+[#AnaBaslik]
+## YAŞAM
 
 *** 
 
@@ -78,6 +83,8 @@ http://discuss.asciidoctor.org[Discuss Asciidoctor^]
 https://example.org["Google, Yahoo, Bing^", role="teal"]
 
 * Inline anchors
+ 
+link:odev_01_eklenti.adoc[]
 
 [[bookmark-a]]Inline anchors make arbitrary content referenceable.
 
@@ -87,8 +94,9 @@ anchor:bookmark-c[]Use a cross reference to link to this location.
 
 [[bookmark-d,last paragraph]]The xreflabel attribute will be used as link text in the cross-reference link.
 
+* Internal cross
 
+See <<AnaBaslik>> to learn how to write paragraphs.
 
-
-
+Learn how to organize the document into <<AnaBaslik,sections>>.
 
