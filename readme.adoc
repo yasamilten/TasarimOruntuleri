@@ -114,7 +114,11 @@ Click image:Images/play.png[start,title="start"] for start
 
 Click image:Images/pause.png[pause,title="pause"] for pause
 
+VIDEOS
 
+* Block
+
+video::Videos/pasta.mp4[width=640, start=60, end=140, options=autoplay]
 
 
 
