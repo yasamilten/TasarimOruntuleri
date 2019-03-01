@@ -38,7 +38,7 @@ bağlanırlar (Genelde /dev dizininde).
 
 ====
 
-
+[.result]
 ====
 IMPORTANT: This is important for you...
 
