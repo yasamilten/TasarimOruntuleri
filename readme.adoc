@@ -59,18 +59,18 @@ http://bilgisayar.kocaeli.edu.tr
 http://bilgisayar.kocaeli.edu.tr[*KOÜ* - Bilgisayar Mühendisliği]
 
 * With spaces and special characters
-
++
 link:++https://example.org/?q=[a b]++[URL with special characters]
-
++
 link:https://example.org/?q=%5Ba%20b%5D[URL with special characters]
 
 * Relative
-
++
 link:index.html[index]
 
 * Link with attributes
 
-
++
 :linkattrs:
 
 http://discuss.asciidoctor.org[Discuss Asciidoctor, role="external", window="_blank"]
