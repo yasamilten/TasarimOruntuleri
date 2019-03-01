@@ -53,9 +53,9 @@ NOTE: This is note for you...
 LINKS
 
 * External
-
++
 http://bilgisayar.kocaeli.edu.tr
-
++
 http://bilgisayar.kocaeli.edu.tr[*KOÜ* - Bilgisayar Mühendisliği]
 
 * With spaces and special characters
