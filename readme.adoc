@@ -38,13 +38,13 @@ bağlanırlar (Genelde /dev dizininde).
 
 ====
 
-[.result]
+[#Admonition]
 ====
 IMPORTANT: This is important for you...
 
 WARNING: This is warning for you...
 
-NOTE: This is note for you...
+NOTE: This is note for you... 
 
 ====
 
@@ -93,5 +93,20 @@ anchor:bookmark-c[]Use a cross reference to link to this location.
 
 * Internal cross
 
-Sayfada bulunan ilk başlığa git <<AnaBaslik,İlk başlık>>.
+Go to main first title in page <<AnaBaslik,İlk başlık>>.
+
+Go to admonitions in page <<Admonition,Admonitions>>
+
+
+
+
+
+
+[.result]
+====
+[[bookmark-a]]Inline anchors make arbitrary content referenceable.
+
+anchor:bookmark-b[]Use a cross reference to link to this location.
+====
+
 
