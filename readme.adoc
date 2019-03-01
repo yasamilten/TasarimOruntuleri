@@ -72,46 +72,46 @@ link:index.html[index]
 
 +
 :linkattrs:
-
++
 http://discuss.asciidoctor.org[Discuss Asciidoctor, role="external", window="_blank"]
-
++
 http://discuss.asciidoctor.org[Discuss Asciidoctor^]
-
++
 https://example.org["Google, Yahoo, Bing^", role="teal"]
 
 * Inline anchors
- 
+ +
 link:odev_01_eklenti.adoc[]
-
++
 [[bookmark-a]]Inline anchors make arbitrary content referenceable.
-
++
 [#bookmark-b]#Inline anchors can be applied to a phrase like this one.#
-
++
 anchor:bookmark-c[]Use a cross reference to link to this location.
-
++
 [[bookmark-d,last paragraph]]The xreflabel attribute will be used as link text in the cross-reference link.
 
 * Internal cross
-
++
 Go to first title in page <<AnaBaslik,İlk başlık>>.
-
++
 Go to admonitions in page <<Admonition,Admonitions>>
 
 IMAGES
 
 * Block
-
++
 image::Images/cat_1.jpg[]
-
++
 .Where is it looking ?
 [#img-cat]
 [caption="Cat 2: ",link=https://www.hillspet.com/cat-care/cat-breeds/russian-blue]
 image::Images/cat_2.jpg[Sunset,300,200]
 
 * Inline
-
++
 Click image:Images/play.png[start,title="start"] for start
-
++
 Click image:Images/pause.png[pause,title="pause"] for pause
 
 VIDEOS
