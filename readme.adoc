@@ -120,3 +120,5 @@ VIDEOS
 * Embedded Youtube video
 +
 video::6rLq0XpUhdA[youtube]
+
+NOTE: When I use 'video::pasta.png[]' for block video option ,the AsciidocFX is closing
