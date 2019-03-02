@@ -1,4 +1,4 @@
-[#AnaBaslik]
+﻿[#AnaBaslik]
 = İki şey sonsuzdur; İnsanoğlunun aptallığı ve evren. Fakat ikincisinden emin değilim (Albert Einstein)
 
 == Azim paha biçilmezdir, Çok zeki olduğumdan değil, sorunlarla uğraşmaktan vazgeçmediğimden başarıyorum(Albert Einstein)
@@ -122,3 +122,62 @@ VIDEOS
 video::6rLq0XpUhdA[youtube]
 
 NOTE: When I use 'video::pasta.png[]' for block video option ,the AsciidocFX is closing
+
+C++ SOURCE CODE
+
+* Code block with title and syntax highlighting
+
+.app.cpp
+[source,c++]
+----
+#include <iostream>
+ 
+using namespace std;
+ 
+int main()
+{
+  // print output to user
+  cout << "Hello World!" << endl;
+  return 0;
+}
+----
+
+
+* Inline (monospace only)
++
+Reference code like `types` or `methods` inline.
++
+Do not pass arbitrary ``Object``s to methods that accept ``String``s!
+
+* Inline (literal)
++
+Output literal monospace text such as `+{backtick}+` by enclosing the text in pluses, then in backticks.
+
+
+LINUX BASH SCRIPT CODE
+
+```sh
+#!/bin/bash
+# Basit bir Bash Script
+echo Ev klasörünüzdeki dosyalar:
+ls ~
+```
+
+[source,sh]
+----
+#!/bin/bash
+# Basit bir Bash Script
+echo Ev klasörünüzdeki dosyalar:
+ls ~
+----
+
+TABLES
+
+|===
+|DERS ADI |AKTS
+
+|Tasarım Örüntüleri |8
+
+|Makine Öğrenmesi |8
+|===
+
