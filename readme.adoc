@@ -5,6 +5,7 @@
 
 ***
 
+==== LISTS
 ====
 LINUX
 
@@ -38,6 +39,7 @@ bağlanırlar (Genelde /dev dizininde).
 
 ====
 
+==== ADMONITION
 [#Admonition]
 ====
 IMPORTANT: This is important for you...
@@ -50,7 +52,7 @@ NOTE: This is note for you...
 
 *** 
 
-LINKS
+==== LINKS
 
 * External
 +
@@ -97,7 +99,7 @@ Go to first title in page <<AnaBaslik,İlk başlık>>.
 +
 Go to admonitions in page <<Admonition,Admonitions>>
 
-IMAGES
+==== IMAGES
 
 * Block
 +
@@ -115,7 +117,7 @@ Click image:Images/play.png[start,title="start"] for start
 Click image:Images/pause.png[pause,title="pause"] for pause
 
 
-VIDEOS
+==== VIDEOS
 
 * Embedded Youtube video
 +
@@ -123,7 +125,7 @@ video::6rLq0XpUhdA[youtube]
 
 NOTE: When I use 'video::pasta.png[]' for block video option ,the AsciidocFX is closing
 
-C++ SOURCE CODE
+==== C++ SOURCE CODE
 
 * Code block with title and syntax highlighting
 
@@ -154,7 +156,7 @@ Do not pass arbitrary ``Object``s to methods that accept ``String``s!
 Output literal monospace text such as `+{backtick}+` by enclosing the text in pluses, then in backticks.
 
 
-LINUX BASH SCRIPT CODE
+==== LINUX BASH SCRIPT CODE
 
 ```sh
 #!/bin/bash
@@ -171,7 +173,7 @@ echo Ev klasörünüzdeki dosyalar:
 ls ~
 ----
 
-TABLES
+==== TABLES
 
 |===
 |DERS ADI |AKTS
