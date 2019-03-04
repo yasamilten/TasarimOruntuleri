@@ -1,0 +1,16 @@
+==== LINUX BASH SCRIPT CODE
+
+```sh
+#!/bin/bash
+# Basit bir Bash Script
+echo Ev klasörünüzdeki dosyalar:
+ls ~
+```
+
+[source,sh]
+----
+#!/bin/bash
+# Basit bir Bash Script
+echo Ev klasörünüzdeki dosyalar:
+ls ~
+----
