@@ -1,3 +1,6 @@
+====
+LINUX
+
 .  Linux, UNIX benzeri, açık kaynak kodlu bir işletim
 sistemidir.
 
@@ -24,3 +27,6 @@ Linux dizin yapısı
 
 * Tüm donanımlar da bu ağaç yapısına bir dosya olarak
 bağlanırlar (Genelde /dev dizininde).
+
+
+====
