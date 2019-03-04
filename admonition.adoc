@@ -1,0 +1,11 @@
+[#Admonition]
+====
+IMPORTANT: This is important for you...
+
+WARNING: This is warning for you...
+
+NOTE: This is note for you... 
+
+====
+
+*** 
