@@ -43,4 +43,4 @@ anchor:bookmark-c[]Use a cross reference to link to this location.
 +
 Go to top page <<TopPage,Top page>>.
 +
-Go to relative links<<Relative,Relative>>
+Go to relative link <<Relative,Relative>>
