@@ -1,0 +1,30 @@
+==== C++ SOURCE CODE
+
+* Code block with title and syntax highlighting
+
+.app.cpp
+[source,c++]
+----
+#include <iostream>
+ 
+using namespace std;
+ 
+int main()
+{
+  // print output to user
+  cout << "Hello World!" << endl;
+  return 0;
+}
+----
+
+
+* Inline (monospace only)
++
+Reference code like `types` or `methods` inline.
++
+Do not pass arbitrary ``Object``s to methods that accept ``String``s!
+
+* Inline (literal)
++
+Output literal monospace text such as `+{backtick}+` by enclosing the text in pluses, then in backticks.
+
