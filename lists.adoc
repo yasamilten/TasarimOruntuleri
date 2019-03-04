@@ -1,0 +1,26 @@
+.  Linux, UNIX benzeri, açık kaynak kodlu bir işletim
+sistemidir.
+
+. Çoğunlukla Linux denilse de, daha doğrusu GNU/Linux
+demektir. Çünkü, linux çekirdeğin adıdır, geri kalan
+herşey GNU projesi ile başlamıştır.
+
+. Linux'ta her dosya ya da dizin bir başka dizinin içinde
+bulunmak zorundadır.
+
+
+
+Linux dizin yapısı
+
+* Ev dizinleri genelde /home dizini içinde yer alır.
+
+* Pek çok komut /bin ve /sbin dizinindedir.
+
+* Geçici dosyalar /tmp dizininde tutulur.
+
+* Programlar genelde /usr ve /opt dizinlerinde tutulur.
+
+* Sistemin ayar dosyaları /etc dizinindedir.
+
+* Tüm donanımlar da bu ağaç yapısına bir dosya olarak
+bağlanırlar (Genelde /dev dizininde).
