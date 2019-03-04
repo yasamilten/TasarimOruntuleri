@@ -1,3 +1,4 @@
+[#TopPage]
 * External
 +
 http://bilgisayar.kocaeli.edu.tr
@@ -10,6 +11,7 @@ link:++https://example.org/?q=[a b]++[URL with special characters]
 +
 link:https://example.org/?q=%5Ba%20b%5D[URL with special characters]
 
+[#Relative]
 * Relative
 +
 link:index.html[index]
@@ -39,6 +41,6 @@ anchor:bookmark-c[]Use a cross reference to link to this location.
 
 * Internal cross
 +
-Go to first title in page <<AnaBaslik,İlk başlık>>.
+Go to top page <<TopPage,Top page>>.
 +
-Go to admonitions in page <<Admonition,Admonitions>>
+Go to relative links<<Relative,Relative>>
