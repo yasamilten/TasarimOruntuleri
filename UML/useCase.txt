@@ -1,0 +1,11 @@
+@startuml
+actor musteri
+actor restoran
+  musteri -- (Menüyü görüntüle)
+  (Menüyü görüntüle) -- restoran
+   restoran -- (Siparişi görüntüle)
+  musteri -- (Sepete ürün ekle)
+  musteri -- (Sipariş ver)
+@enduml
+
+
