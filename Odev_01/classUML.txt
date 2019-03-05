@@ -1,0 +1,13 @@
+@startuml
+Hayvan <|-- Ordek
+Hayvan <|-- Kopek
+
+Hayvan : + yas:Int
+Hayvan : + sicakkanliMi()
+
+Ordek : + yuzer()
+Ordek : + vak()
+
+Kopek : - cinsi
+Kopek : + kosar()
+@enduml
