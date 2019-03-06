@@ -1,5 +1,6 @@
 ==== LINUX BASH SCRIPT CODE
 
+[source,bash]
 ```sh
 #!/bin/bash
 # Basit bir Bash Script
