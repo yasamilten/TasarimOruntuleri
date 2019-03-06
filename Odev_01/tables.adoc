@@ -1,8 +1,0 @@
-
-|===
-|DERS ADI |AKTS
-
-|Tasarım Örüntüleri |8
-
-|Makine Öğrenmesi |8
-|===
