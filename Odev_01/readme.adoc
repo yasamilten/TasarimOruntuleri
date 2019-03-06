@@ -40,6 +40,14 @@ bağlanırlar (Genelde /dev dizininde).
 ====
 
 ==== ADMONITION
+ifdef::env-github[]
+:tip-caption: 💡 
+:note-caption: ℹ️ 
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
 [#Admonition]
 ====
 IMPORTANT: This is important for you...
