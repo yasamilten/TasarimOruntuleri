@@ -1,7 +1,7 @@
 [#AnaBaslik]
 = İki şey sonsuzdur; İnsanoğlunun aptallığı ve evren. Fakat ikincisinden emin değilim (Albert Einstein)
 
-== Azim paha biçilmezdir, Çok zeki olduğumdan değil, sorunlarla uğraşmaktan vazgeçmediğimden başarıyorum(Albert Einstein)
+== Azim paha biçilmezdir.
 
 
 
@@ -135,10 +135,6 @@ video::6rLq0XpUhdA[youtube]
 
 NOTE: When I use 'video::pasta.mp4[]' for block video option ,the AsciidocFX is closing
 
-* Block 
-+
-video::pasta.mp4[]
-
 ==== C++ SOURCE CODE
 
 * Code block with title and syntax highlighting
@@ -198,6 +194,26 @@ ls ~
 
 |Makine Öğrenmesi |8
 |===
+
+==== UML
+
+[uml,file="uml-diagram.png"]
+--
+@startuml
+Hayvan <|-- Ordek
+Hayvan <|-- Kopek
+
+Hayvan : + yas:Int
+Hayvan : + sicakkanliMi()
+
+Ordek : + yuzer()
+Ordek : + vak()
+
+Kopek : - cinsi
+Kopek : + kosar()
+@enduml
+
+
 
 
 
