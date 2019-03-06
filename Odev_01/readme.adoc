@@ -3,7 +3,7 @@
 
 == Azim paha biçilmezdir, Çok zeki olduğumdan değil, sorunlarla uğraşmaktan vazgeçmediğimden başarıyorum(Albert Einstein)
 
-***
+
 
 ==== LISTS
 ====
@@ -70,6 +70,8 @@ http://bilgisayar.kocaeli.edu.tr[*KOÜ* - Bilgisayar Mühendisliği]
 
 * With spaces and special characters
 +
+NOTE: "artı artı" ların içerisine koyunca adres hiç çakışma olmaz,++ lar içerisindeki asciidoc metni değil
++
 link:++https://example.org/?q=[a b]++[URL with special characters]
 +
 link:https://example.org/?q=%5Ba%20b%5D[URL with special characters]
@@ -131,7 +133,7 @@ Click image:Images/pause.png[pause,title="pause"] for pause
 +
 video::6rLq0XpUhdA[youtube]
 
-NOTE: When I use 'video::pasta.png[]' for block video option ,the AsciidocFX is closing
+NOTE: When I use 'video::pasta.mp4[]' for block video option ,the AsciidocFX is closing
 
 ==== C++ SOURCE CODE
 
@@ -151,6 +153,8 @@ int main()
   return 0;
 }
 ----
+
+
 
 
 * Inline (monospace only)
@@ -190,4 +194,7 @@ ls ~
 
 |Makine Öğrenmesi |8
 |===
+
+
+
 
