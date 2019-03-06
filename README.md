@@ -1,0 +1,1 @@
+# Konulara göre klasörlendirme yapılmıştır.
