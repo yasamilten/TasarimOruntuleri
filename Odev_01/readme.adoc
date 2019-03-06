@@ -135,6 +135,10 @@ video::6rLq0XpUhdA[youtube]
 
 NOTE: When I use 'video::pasta.mp4[]' for block video option ,the AsciidocFX is closing
 
+* Block 
++
+video::pasta.mp4[]
+
 ==== C++ SOURCE CODE
 
 * Code block with title and syntax highlighting
