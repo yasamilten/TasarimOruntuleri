@@ -4,11 +4,11 @@ skinparam packageStyle rectangle
 actor doktor
 rectangle Hastane_Randevu_Sistemi{
   doktor -- (login)
-  (login) .> (þifre kontrol) : include
-  (login) .>(hata göster) : extend
-  doktor -- (kendisine alýnan randevularý görüntüle)
+  (login) .> (ÅŸifre kontrol) : include
+  (login) .>(hata gÃ¶ster) : extend
+  doktor -- (kendisine alÄ±nan randevularÄ± gÃ¶rÃ¼ntÃ¼le)
   doktor -- (randevu listesinde arama)
-  doktor -- (hesap bilgilerini yönet
+  doktor -- (hesap bilgilerini yÃ¶net
   (randevu listesinde arama) .> (Hasta TC ile arama ) : include
   }
 @enduml
