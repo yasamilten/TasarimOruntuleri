@@ -1,0 +1,33 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor hasta
+actor doktor
+actor yönetici
+rectangle Hastane_Randevu_Sistemi{
+  hasta -- (login)
+  (login) .> (þifre kontrol) : include
+  (Hata göster) .> (login) : extend
+   hasta -- (randevu al)
+  (randevu al) .>(maile bilgi gönder) : include
+  hasta -- (randevu iptal et)
+  (randevu iptal et) .> (maile bilgi gönder) :include
+  hasta -- (randevu geçmiþini görüntüle)
+  hasta -- (hesap bilgilerini yönet)
+  
+  doktor -- (login)
+  doktor -- (kendisine alýnan randevularý görüntüle)
+  doktor -- (randevu listesinde arama)
+  doktor -- (hesap bilgilerini yönet)
+  (randevu listesinde arama) .> (Hasta TC ile arama ) : include
+  
+  (login) -- yönetici
+  (kullanýcýlarý görüntüle) --yönetici
+  (kullanýcý sil) -- yönetici
+  (kullanýcý sil) .> (maile bilgi gönder) : include
+  (randevularý görüntüle)
+  (randevu iptal et) -- yönetici
+  (randevu iptal et) .> (maile bilgi gönder) : include  
+  (hesap bilgilerini yönet) --yönetici
+}
+@enduml  

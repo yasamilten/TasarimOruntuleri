@@ -1,0 +1,14 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor doktor
+rectangle Hastane_Randevu_Sistemi{
+  doktor -- (login)
+  (login) .> (þifre kontrol) : include
+  (login) .>(hata göster) : extend
+  doktor -- (kendisine alýnan randevularý görüntüle)
+  doktor -- (randevu listesinde arama)
+  doktor -- (hesap bilgilerini yönet
+  (randevu listesinde arama) .> (Hasta TC ile arama ) : include
+  }
+@enduml
