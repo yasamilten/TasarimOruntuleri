@@ -1,0 +1,17 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor hasta
+rectangle Hastane_Randevu_Sistemi{
+  hasta -- (login)
+  (login) .> (şifre kontrol) : include
+  (login) .>(Hata göster) : extend
+  hasta -- (randevu al)
+  (randevu al) .>(maile bilgi gönder) : include
+  hasta -- (randevu iptal et)
+  (randevu iptal et) .> (maile bilgi gönder) :include
+  hasta -- (randevu geçmişini görüntüle)
+  hasta -- (hesap bilgilerini yönet)
+  
+}
+@enduml
