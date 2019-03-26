@@ -1,0 +1,87 @@
+@startuml
+abstract  class Kullanici {
+  +{field} ID : int
+  +{field} tc : string
+  +{field} ad : string
+  +{field} soyad : string
+  +{field} telefon : string
+  +{field} cinsiyet : bool
+  +{field} dogumTarihi : Date
+  +{field} dogumYeri : string
+  +{field} babaAdi : string
+  +{field} anneAdi : string
+  +{field} aktifMi : bool
+  +{field} sifre : string
+  +{method} giris(tc:string, sifre:string) : bool
+  +{method} hesapBilgileriniYonet(kullaniciID:int) : kullanici
+}
+
+Kullanici <|-- Yonetici
+
+class Yonetici{
+    +{field} ID : int
+    +{method} randevuIptalEt(randevuID:int) : bool
+    +{method} kullaniciSil(kullaniciID:int) : bool
+    +{method} kullanicilariGoruntule() : ArrayList<Kullanici>
+}
+
+Kullanici <|-- Doktor
+
+class Doktor{
+    +{field} ID : int
+    +{field} uzmanlikAlanID : int
+    +{field} hastaneID : int
+    +{method} randevulariGoruntule(doktorID:int) : List<Randevu>
+    +{method} randevuListesindeArama(hastaTC:string) : Hasta
+}
+
+Kullanici <|-- Hasta
+
+class Hasta{
+    +{field} ID : int
+    +{field} randevuID : int
+    +{method} randevuAl(randevu : Randevu) : bool
+    +{method} randevuIptalEt( randevuID : int) : bool
+    +{method} randevuGecmisiniGoruntule(kullaniciID : int) :List<Randevu>
+}
+
+class Hastane{
+    +{field} ID : int
+    +{field} adi : string
+    +{field} bagliOlduguIlce : string
+}
+
+class Il{
+ +{field} ID : int
+ +{field} adi : string
+}
+
+class Ilce{ 
+ +{field} ID : int
+ +{field} ilID : int
+ +{field} adi : string
+}
+
+class Bolum{ 
+    +{field} ID : int
+    +{field} bolumAdi : string
+}
+
+class Randevu{ 
+    +{field} ID : int
+    +{field} hastaID : int
+    +{field} randevuTarihi : date
+    +{field} hastaneID : int
+    +{field} doktorID : int
+}
+
+Il  *-- "1..*" Ilce 
+
+Hastane  *-- "1..*" Bolum
+
+Bolum *-- "1..*" Doktor
+
+Hasta *-- "0..*" Randevu
+
+Ilce "1" o-- "0..*" Hastane
+@enduml
