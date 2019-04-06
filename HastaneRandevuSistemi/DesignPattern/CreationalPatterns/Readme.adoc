@@ -1,4 +1,4 @@
-## ImportManager içerisinde Singleton Design Pattern örneği bulunmaktadır. 
+## ImportManager sınıfı içerisinde Singleton Design Pattern örneği bulunmaktadır. 
 
 ## ObjectPool_Prototype_DesignPattern projesi içerisindeki ObjectPool örneğinde de Singleton thread-safe örneği bulunmaktadır.
 
