@@ -1,0 +1,42 @@
+@startuml
+
+
+interface IAggregate{
+ + CreateIterator()  IIterator
+}
+
+class PatientAggregate{
+  +PatientList  ListPatient
+  +Countint
+  +Add (Patient Model)  void
+  +GetItem(int index)Patient
+  +CreateIterator()IIterator
+}
+
+IAggregate .. PatientAggregate
+
+
+interface IITerator{
+ +HasItem()bool
+ +NextItem()Patient
+ +CurrentItem()Patient
+}
+
+class PatientIterator{
+  +aggregatePatientAggregate
+  +currentindexint
+  +CurrentItem()Patient
+  +HasItem()bool
+  +NextItem()Patient
+}
+
+IITerator..PatientIterator
+
+PatientAggregate --PatientIterator 
+PatientAggregate ..PatientIterator 
+
+class client{
+}
+
+client --IAggregate
+@enduml

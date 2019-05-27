@@ -1,0 +1,116 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication1
+{
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            PatientAggregate aggregate = new PatientAggregate();
+            aggregate.Add(new Patient { Tc = "12333333333", Ad = "Yaşam", Soyad = "İLTEN" });
+            aggregate.Add(new Patient { Tc = "45622222222", Ad = "Gizem", Soyad = "Koç" });
+            aggregate.Add(new Patient { Tc = "22222222222", Ad = "Aslı", Soyad = "Dere" });
+
+            Console.WriteLine("Hasta Listesi");
+            IIterator iterasyon = aggregate.CreateIterator();
+            while (iterasyon.HasItem())
+            {
+                Console.WriteLine("{0} - {1} {2}", iterasyon.CurrentItem().Tc, iterasyon.CurrentItem().Ad, iterasyon.CurrentItem().Soyad);
+                iterasyon.NextItem();
+            }
+
+            Console.Read();
+        }
+
+    }
+
+    public class Patient
+    {
+        public int Id { get; set; }
+        public string Tc { get; set; }
+        public string Ad { get; set; }
+        public string Soyad { get; set; }
+        public string Telefon { get; set; }
+        public DateTime dogumTarihi { get; set; }
+        public string DogumYeri { get; set; }
+        public string BabaAdi { get; set; }
+        public string AnneAdi { get; set; }
+    }
+
+
+    public interface IAggregate
+    {
+        IIterator CreateIterator();
+    }
+
+    public interface IIterator
+    {
+        //Bir sonraki adımda hasta var mı?
+        bool HasItem();
+
+        //Bir sonraki adımdaki hastayı getir.
+         Patient NextItem();
+
+        //Mevcut hastayı getir.
+         Patient CurrentItem();
+    }
+
+    public class PatientAggregate : IAggregate
+    {
+        public List<Patient> PatientList = new List<Patient>();
+
+        public void Add(Patient Model)
+        {
+            PatientList.Add(Model);
+        }
+
+        public Patient GetItem(int index)
+        {
+            return PatientList[index];
+        }
+
+        public int Count { get { return PatientList.Count; } }
+
+
+        public IIterator CreateIterator()
+        {
+            return new PatientIterator(this);
+        }
+    }
+
+    class PatientIterator : IIterator
+    {
+        PatientAggregate aggregate;
+        int currentindex;
+
+        public PatientIterator(PatientAggregate aggregate)
+        {
+            this.aggregate = aggregate;
+        }
+
+        public Patient CurrentItem()
+        {
+            return aggregate.GetItem(currentindex);
+        }
+        public bool HasItem()
+        {
+            if (currentindex < aggregate.Count)
+                return true;
+            return false;
+        }
+        public Patient NextItem()
+        {
+            if (HasItem())
+                return aggregate.GetItem(currentindex++);
+            return new Patient();
+        }
+    }
+
+}
+
+
