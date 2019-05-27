@@ -1,0 +1,29 @@
+@startuml
+class Randevu{
+       +{field} Id : int
+       +{field} HastaId : int
+       +{field} HastaneId : int
+       +{field} DoktorId : int
+       +{field} RandevuTarihi : DateTime
+       +{field} AktifMi : bool
+       +{method} Kaydet(): RandevuMemento
+       +{method}OncekiniYukle: void
+}
+
+class RandevuMemento{
+       +{field} Id : int
+       +{field} HastaId : int
+       +{field} HastaneId : int
+       +{field} DoktorId : int
+       +{field} RandevuTarihi : DateTime
+       +{field} AktifMi : bool
+}
+
+class RandevuCareTaker{
+      +{field}  Memento: RandevuMemento
+}
+
+Randevu ..> RandevuMemento
+RandevuCareTaker  o--> RandevuMemento
+
+@enduml
