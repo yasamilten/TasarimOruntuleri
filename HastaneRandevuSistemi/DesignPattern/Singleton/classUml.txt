@@ -1,0 +1,12 @@
+@startuml
+
+class ImportManager{
+- {static} ImportManager _instance
+- HastaneRandevuSistemiContext db 
+- ImportManager()
++ {static} GetInstance() : ImportManager
++ ImportFile(MyFile file) : bool  
+}
+
+ImportManager <-- ImportManager
+@enduml
