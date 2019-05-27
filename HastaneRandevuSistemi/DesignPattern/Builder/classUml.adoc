@@ -1,1 +1,28 @@
-test
+@startuml
+class BuilderDesign {
+
+}
+
+class Director{
++ KullaniciOlustur(builder:UserBuilder):void
+}
+
+abstract  class UserBuilder
+{
+#user:User
++ {abstract} SetUserType():void
+}
+
+UserBuilder<|-- HastaConcreteBuilder
+
+UserBuilder<|-- DoktorConcreteBuilder
+
+UserBuilder<|-- YoneticiConcreteBuilder
+
+class User{
++ userType:UserType
++ ToString():string
+}
+
+enum UserType
+@enduml
