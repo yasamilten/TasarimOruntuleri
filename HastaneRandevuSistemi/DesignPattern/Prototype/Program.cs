@@ -1,0 +1,133 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Prototype
+{
+    class Program
+    {
+        //Bu tasarım deseni sayesinde yeni user tanımlarında New anahtar sözcüğünü kullanmaya gerek yoktur. 
+        static void Main(string[] args)
+        {
+            User user1 = new User(User.UserTypes.Patient);
+            user1.Id = 1;
+            user1.Name = "Yaşam";
+
+
+            User user2 = user1.ShallowCopy() as User;
+            User user3 = user1.DeepCopy() as User;
+
+            Console.WriteLine("Original");
+            Console.Write("User 1: ");
+            ShowWithFormat(user1);
+            Console.WriteLine("Shallow copy");
+            Console.Write("User 2: ");
+            ShowWithFormat(user2);
+            Console.WriteLine("Deep copy");
+            Console.Write("User 3: ");
+            ShowWithFormat(user3);
+            Console.WriteLine();
+
+            user1.Id = 2;
+            user1.Name = "Ahmet";
+            user1.UserType = User.UserTypes.Doctor;
+
+
+            user2.Name = "Ali";
+            user3.UserType = User.UserTypes.Manager;
+
+            Console.WriteLine("After changes\n");
+            Console.WriteLine("Original");
+            Console.Write("User 1: ");
+            ShowWithFormat(user1);
+            Console.WriteLine("Shallow copy");
+            Console.Write("User 2: "); //reference values have changed
+            ShowWithFormat(user2);
+            Console.WriteLine("Deep copy");
+            Console.Write("User 3: "); //everything was kept the same
+            ShowWithFormat(user3);
+            Console.WriteLine();
+
+            Console.ReadKey();
+
+
+        }
+        public static void ShowWithFormat(User user)
+        {
+            Console.WriteLine("Id :{0} Name:{1} Type:{2} \n", user.Id, user.Name, user.UserType);
+        }
+    }
+
+
+    //İlk yapmamız gereken Prototipi belirten Abstract Class’ını tasarlamaktır.
+    public abstract class Prototype
+    {
+        public abstract User ShallowCopy();
+
+        public abstract User DeepCopy();
+
+
+    }
+
+    //Prototipe ait Class içerisinde bulunan Abstract türündeki ShallowCopy adlı metodumuz geriye Prototip tipinden bir değer döndürmektedir. 
+    //Bu sayede Prototip Class’ımızdan miras alan Class’ların, Prototip Class’ımızın Abstract olması sebebiyle New ile yeni bir nesne oluşturulamayacağından dolayı kendisinin geriye döndürülmesini sağlayacaktır.
+    //Prototip tanımımızı yaptıktan sonra artık üyelerimize ait bilgilerin tutulacağı sınıfımızı tasarlayabiliriz.
+
+    //User sınıfında miras aldığımız Prototipimiz içerisinde bulunan Abstract türündeki ShallowCopy metodunu ezerek içerisinde sınıfı tüm özellikleriyle kopyalamayı sağlayan MemberwiseClone metodunu kullandık.
+    //Ancak MemberwiseClone metodu Object tipinden veri döndürdüğü için ve bizim döndürmemiz gereken tip Class’ın kendi tipi olması gerektiğinden dolayı as User komutu ile bu problemi çözüyoruz.
+    public class User : Prototype
+    {
+        public enum UserTypes
+        {
+            Patient,
+            Doctor,
+            Manager
+        }
+
+
+        public int Id { get; set; }
+        public UserTypes UserType { get; set; }
+
+        public string Name { get; set; }
+
+        public User(UserTypes userType)
+        {
+            UserType = userType;
+        }
+        public override User ShallowCopy()
+        {
+            return (User)this.MemberwiseClone();
+        }
+
+        public override User DeepCopy()
+        {
+            User clone = (User)this.MemberwiseClone();
+            clone.Name = String.Copy(Name);
+            return clone;
+        }
+
+
+    }
+}
+
+
+#region Shallow Copy
+/*Nesnenin üye elemanlarını kopyalar.
+ * Eğer bu üye eleman Değer tipinde ise bit bit kopyalama işlemi gerçekleştirilir.
+ * Eğer üye eleman referans tipinde ise referans kopyalanır fakat referansın gösterdiği veri kümesi kopyalanmaz.
+ * Orjinal nesne ve Kopyalanmış nesnede yer alan referans tipi üye eleman bellekte aynı veri kümesine işaret eder.
+ * Kopyalama işlemi static üye elemanları için geçersizdir.
+ * Shallow copy için .NET MemberwiseClone metodu sunar.
+*/
+#endregion
+
+#region Deep Copy
+/*
+ Nesnenin bütün değer ve referans üye elemanlarını bit bit kopyalama işlemine denir. 
+ Deep copy işlemini kendimiz yazmamız gerekmektedir. 
+ Deep copy için .Net in sunduğu herhangi bir sınıf metod bulunmamaktadır.
+
+     */
+#endregion
