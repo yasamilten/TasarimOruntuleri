@@ -1,0 +1,36 @@
+
+@startuml
+
+class Doctor{
++Id : Integer
++SicilNo : String
++TC : String
++Ad : String
++Soyad : String
+-hastaneyeGeldimi : boolean
++HastaneyeGeldimi : boolean
+-observers : List<Observer>
+
++AddObserver(Observer observer) : void
++Notify() : void
+}
+
+abstract class Observer{
++{abstract}SendMessage(string sicilNo,string firstName,string lastName)
+}
+
+class ManagementObserver{
++SendMessage(string sicilNo,string firstName,string lastName)
+}
+
+class PatientObserver{
++SendMessage(string sicilNo,string firstName,string lastName)
+}
+
+Observer  <|-- PatientObserver 
+Observer  <|-- ManagementObserver 
+
+Observer "0..*" <-- Doctor : uses
+
+@enduml
+
