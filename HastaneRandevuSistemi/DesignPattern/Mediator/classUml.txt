@@ -1,0 +1,31 @@
+@startuml
+
+interface IYonetici{
+   HastaKayit(AbsHasta hasta):void
+   RandevuOnayVer(string hastaTC):void
+}
+
+abstract AbsHasta{
+  + IYonetici IliskiliYonetici 
+  + string hastaTC 
+  + bool RandevuOnayi
+  +  RandevuOnayIste() :void
+  + virtual SetRandevuOnayi(bool onay):void
+}
+
+
+class YasamHastanesi{
+ + List<AbsHasta> _HastaListe
+ + HastaKayit(AbsHasta _hasta) : void
+ + RandevuOnayVer(string hastaTC) : void
+}
+
+class YasamHastanesiHastasi{
+ + SetRandevuOnayi(bool onay) :void 
+}
+
+IYonetici <|-- YasamHastanesi
+IYonetici <-- AbsHasta
+AbsHasta <|-- YasamHastanesiHastasi
+YasamHastanesiHastasi <-- YasamHastanesi 
+@enduml
