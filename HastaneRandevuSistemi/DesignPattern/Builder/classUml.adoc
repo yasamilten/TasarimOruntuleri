@@ -25,4 +25,5 @@ class User{
 }
 
 enum UserType
+
 @enduml
