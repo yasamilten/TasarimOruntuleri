@@ -1,0 +1,25 @@
+@startuml
+
+
+abstract Prototype{
+  + {abstract} ShallowCopy():User
+  + {abstract} DeepCopy():User
+}
+
+class User{
+ + UserTypes :enum
+ + Id : int
+ + UserType : UserType
+ + Name : string
+ + User(userType : UserTypes)
+ + ShallowCopy() : User
+ + DeepCopy() : User
+}
+
+class Client{
+ + BuildPrototype()
+}
+
+Prototype <|-- User
+Client o.. Prototype
+@enduml
