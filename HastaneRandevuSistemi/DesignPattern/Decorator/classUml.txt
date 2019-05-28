@@ -1,0 +1,29 @@
+@startuml
+
+interface IRandevuIslemler{
+     Ekle(Randevu randevu):void
+     Sil(Randevu randevu):void
+}
+
+class RandevuIslemler{
+    + Ekle(Randevu randevu):void
+    +Sil(Randevu randevu):void
+}
+
+abstract RandevuIslemlerDecorator{
+ -randevuOperation : IRandevuIslemler
+ +RandevuIslemlerDecorator(randevuOperationn : IRandevuIslemler)
+ +Ekle(Randevu randevu) : void
+ +Sil(Randevu randevu) : void 
+}
+
+class RandevuMesajOperation {
+ + RandevuMesajOperation(randevuOperation : IRandevuIslemler)
+ + MesajGonder( mesaj : string) : void
+}
+
+IRandevuIslemler <|-- RandevuIslemler
+IRandevuIslemler <|-- RandevuIslemlerDecorator
+IRandevuIslemler  <--o RandevuIslemlerDecorator
+RandevuIslemlerDecorator <|-- RandevuMesajOperation
+@enduml
