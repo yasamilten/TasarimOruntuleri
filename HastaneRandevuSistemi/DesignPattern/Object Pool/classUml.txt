@@ -1,0 +1,31 @@
+@startuml
+
+class PatientPool{
+ - {static} instance:Lazy<PatientPool> 
+ + {static} Instance:PatientPool
+ + Size : int
+ + TotalObject : int
+ -  defaultSize = const int
+ -  _bag : ConcurrentBag<Patient>
+ - _currentSize :  volatile int
+ - _counter  :  volatile int
+ - {static}  _lockObject:readonly object
+ - PatientPool()
+ -PatientPool(size : int)
+ + AcquireObject() : Patient
+ + ReleaseObject(item : Patient) : void 
+ + IncreaseSize() : void
+}
+
+class RequestPatient {
+ +  Login( email : string, password : strig ) : void
+}
+
+abstract Patient{
+ + {abstract}  Login( email : string, password : string) : void
+}
+
+PatientPool o-- RequestPatient
+Patient <|-- RequestPatient
+PatientPool <-- Patient
+@enduml
