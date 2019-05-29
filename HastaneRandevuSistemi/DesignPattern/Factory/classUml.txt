@@ -1,0 +1,44 @@
+@startuml
+
+class Creater{
+ + FactoryMethod(userType:UserType):User
+}
+
+class Program{
+
+}
+
+abstract class User{  
++ {abstract}  Login() : void
++ {abstract}  ManageUserInfo() :void
+}
+
+class Yonetici{
++  Login() : void
++  ManageUserInfo() :void
+}
+
+
+class Hasta{
++  Login() : void
++  ManageUserInfo() :void
+}
+
+
+class Doktor{
++  Login() : void
++  ManageUserInfo() :void
+}
+
+
+enum UserType{
+     Hasta
+     Yonetici
+     Doktor
+}
+
+Program "<<uses>>" --> Creater
+User <|-- Yonetici
+User <|-- Doktor
+User <|-- Hasta
+@enduml
