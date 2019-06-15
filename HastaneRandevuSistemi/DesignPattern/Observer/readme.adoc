@@ -1,5 +1,5 @@
 # Observer Design Pattern
 
-- Doktor hastaneye gelmediğinde yöneticiye ve ilgili hastalara mesaj gidecektir.
+- Doktor hastaneye gelmediğinde ilgili yöneticiye ve  hastalara mesaj gidecektir.
 
 - Yoneticiye bu doktor için randevu randevu alma, hastaya bu doktordan alınan randevusunun iptal edildiği mesajı gitmektedir.
