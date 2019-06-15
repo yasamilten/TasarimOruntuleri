@@ -1,1 +1,4 @@
 # Prototype Design Pattern
+
+- Kullanicıları kopyalama işleminde bu design pattern kullanıldı.
+
