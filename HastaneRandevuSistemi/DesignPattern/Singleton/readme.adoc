@@ -1,1 +1,6 @@
 # Singleton Design Pattern
+
+
+- Dosya ekleme işleminde singleton design pattern kullanıldı.
+
+- Kullanılma amacı; dosya eklenirken her defasında nesne oluşturmaktansa bir kez oluşturulup her dosya işlemi için bu nesne kullanılır. Her seferinde yeni nesne oluşturulmasına gerek yoktur bu gibi durumlarda.
