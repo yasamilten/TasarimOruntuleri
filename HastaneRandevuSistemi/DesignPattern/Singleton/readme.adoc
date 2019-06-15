@@ -5,7 +5,7 @@
 
 - Kullanılma amacı; dosya eklenirken her defasında nesne oluşturmaktansa bir kez oluşturulup her dosya işlemi için bu nesne kullanılır. Her seferinde yeni nesne oluşturulmasına gerek yoktur bu gibi durumlarda.
 
-[source,ruby]
+[source,c#]
 ----
 ﻿using System;
 using System.Collections.Generic;
