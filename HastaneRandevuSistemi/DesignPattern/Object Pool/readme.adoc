@@ -1,6 +1,6 @@
 # Object Pool Design Pattern
 
-- Projede sisteme giren hasta sayısını sınırlandırmak için opject pool design pattern kullanıldı. Sisteme aynı anda sınırlı sayıda hasta giriş yapabilecektir.
+- Projede sisteme giren hasta sayısını sınırlandırmak için opject pool design pattern kullanıldı. Sisteme aynı anda 1000 hasta giriş yapabilecektir.
 
 [source,c#]
 ----
