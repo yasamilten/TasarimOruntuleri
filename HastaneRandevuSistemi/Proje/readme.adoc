@@ -530,6 +530,55 @@ namespace DecoratorDesignPattern
 
 - Kullanıcı tiplerine göre kullanıcı oluşturmak için Factory method design pattern kullanıldı. Kullanıcı tipleri ; hasta,doktor ve yöneticidir. Gönderilen tipte kullanıcı oluşturulur ve geriye döndürülür.
 
+### UML 
+[source,uml]
+----
+@startuml
+
+class Creater{
+ + FactoryMethod(userType:UserType):User
+}
+
+class Program{
+
+}
+
+abstract class User{  
++ {abstract}  Login() : void
++ {abstract}  ManageUserInfo() :void
+}
+
+class Yonetici{
++  Login() : void
++  ManageUserInfo() :void
+}
+
+
+class Hasta{
++  Login() : void
++  ManageUserInfo() :void
+}
+
+
+class Doktor{
++  Login() : void
++  ManageUserInfo() :void
+}
+
+
+enum UserType{
+     Hasta
+     Yonetici
+     Doktor
+}
+
+Program "<<uses>>" --> Creater
+User <|-- Yonetici
+User <|-- Doktor
+User <|-- Hasta
+@enduml
+----
+
 [source,c#]
 ----
 ﻿using System;
@@ -646,6 +695,54 @@ namespace Odev_06
 # Iterator Design Pattern
 
 - Hasta listesinde bulunan hastaları listelemek için kullanıldı.
+
+### UML
+
+[source,uml]
+----
+@startuml
+
+
+interface IAggregate{
+ + CreateIterator()  IIterator
+}
+
+class PatientAggregate{
+  +PatientList  ListPatient
+  +Countint
+  +Add (Patient Model)  void
+  +GetItem(int index)Patient
+  +CreateIterator()IIterator
+}
+
+IAggregate .. PatientAggregate
+
+
+interface IITerator{
+ +HasItem()bool
+ +NextItem()Patient
+ +CurrentItem()Patient
+}
+
+class PatientIterator{
+  +aggregatePatientAggregate
+  +currentindexint
+  +CurrentItem()Patient
+  +HasItem()bool
+  +NextItem()Patient
+}
+
+IITerator..PatientIterator
+
+PatientAggregate --PatientIterator 
+PatientAggregate ..PatientIterator 
+
+class client{
+}
+
+client --IAggregate
+@enduml
+----
 
 [source,c#]
 ----
@@ -772,6 +869,43 @@ namespace ConsoleApplication1
 
 - Hastanelerden belirtilen saatte randevu isteyen birden fazla hasta olursa ilk randevuyu isteyen kişiye randevu oluşturulur,o saatter-ki randevu dolduğu için diğer isteyenlere verilmez o saatteki randevu.
 
+### UML
+
+[source,uml]
+----
+@startuml
+
+interface IYonetici{
+   HastaKayit(AbsHasta hasta):void
+   RandevuOnayVer(string hastaTC):void
+}
+
+abstract AbsHasta{
+  + IYonetici IliskiliYonetici 
+  + string hastaTC 
+  + bool RandevuOnayi
+  +  RandevuOnayIste() :void
+  + virtual SetRandevuOnayi(bool onay):void
+}
+
+
+class YasamHastanesi{
+ + List<AbsHasta> _HastaListe
+ + HastaKayit(AbsHasta _hasta) : void
+ + RandevuOnayVer(string hastaTC) : void
+}
+
+class YasamHastanesiHastasi{
+ + SetRandevuOnayi(bool onay) :void 
+}
+
+IYonetici <|-- YasamHastanesi
+IYonetici <-- AbsHasta
+AbsHasta <|-- YasamHastanesiHastasi
+YasamHastanesiHastasi <-- YasamHastanesi 
+@enduml
+----
+
 [source,c#]
 ----
 ﻿using System;
@@ -894,6 +1028,42 @@ namespace MediatorDesignPattern
 # Memento Design Pattern
 
 - Hastaya ait belli bir zamandaki randevuyu kaydetmek ve tekrar kullanabilmek için memento design pattern kullanıldı.
+
+### UML
+
+[source,uml]
+----
+@startuml
+class Randevu{
+       +{field} Id : int
+       +{field} HastaId : int
+       +{field} HastaneId : int
+       +{field} DoktorId : int
+       +{field} RandevuTarihi : DateTime
+       +{field} AktifMi : bool
+       +{method} Kaydet(): RandevuMemento
+       +{method}OncekiniYukle: void
+}
+
+class RandevuMemento{
+       +{field} Id : int
+       +{field} HastaId : int
+       +{field} HastaneId : int
+       +{field} DoktorId : int
+       +{field} RandevuTarihi : DateTime
+       +{field} AktifMi : bool
+}
+
+class RandevuCareTaker{
+      +{field}  Memento: RandevuMemento
+}
+
+Randevu ..> RandevuMemento
+RandevuCareTaker  o--> RandevuMemento
+
+@enduml
+----
+
 
 [source,c#]
 ----
@@ -1158,6 +1328,43 @@ namespace MementoDesignPattern
 
 - Projede sisteme giren hasta sayısını sınırlandırmak için opject pool design pattern kullanıldı. Sisteme aynı anda 1000 hasta giriş yapabilecektir.
 
+### UML
+
+[source,uml]
+----
+@startuml
+
+class PatientPool{
+ - {static} instance:Lazy<PatientPool> 
+ + {static} Instance:PatientPool
+ + Size : int
+ + TotalObject : int
+ -  defaultSize = const int
+ -  _bag : ConcurrentBag<Patient>
+ - _currentSize :  volatile int
+ - _counter  :  volatile int
+ - {static}  _lockObject:readonly object
+ - PatientPool()
+ -PatientPool(size : int)
+ + AcquireObject() : Patient
+ + ReleaseObject(item : Patient) : void 
+ + IncreaseSize() : void
+}
+
+class RequestPatient {
+ +  Login( email : string, password : strig ) : void
+}
+
+abstract Patient{
+ + {abstract}  Login( email : string, password : string) : void
+}
+
+PatientPool o-- RequestPatient
+Patient <|-- RequestPatient
+PatientPool <-- Patient
+@enduml
+----
+
 [source,c#]
 ----
 ﻿using System;
@@ -1360,6 +1567,47 @@ Yani eğer hangi elemanı işlediğiniz önemli değilse ve yukarıda bahsettiğ
 
 - Yoneticiye bu doktor için randevu randevu alma, hastaya bu doktordan alınan randevusunun iptal edildiği mesajı gitmektedir.
 
+### UML
+
+[source,uml]
+----
+@startuml
+
+class Doctor{
++Id : Integer
++SicilNo : String
++TC : String
++Ad : String
++Soyad : String
+-hastaneyeGeldimi : boolean
++HastaneyeGeldimi : boolean
+-observers : List<Observer>
+
++AddObserver(Observer observer) : void
++Notify() : void
+}
+
+abstract class Observer{
++{abstract}SendMessage(string sicilNo,string firstName,string lastName)
+}
+
+class ManagementObserver{
++SendMessage(string sicilNo,string firstName,string lastName)
+}
+
+class PatientObserver{
++SendMessage(string sicilNo,string firstName,string lastName)
+}
+
+Observer  <|-- PatientObserver 
+Observer  <|-- ManagementObserver 
+
+Observer "0..*" <-- Doctor : uses
+
+@enduml
+----
+
+
 [source,c#]
 ----
 ﻿using System;
@@ -1469,6 +1717,38 @@ namespace ObserverDesignPattern
 # Prototype Design Pattern
 
 - Kullanicıları kopyalama işleminde bu design pattern kullanıldı.
+
+### UML
+
+[source,uml]
+----
+@startuml
+
+
+abstract Prototype{
+  + {abstract} ShallowCopy():User
+  + {abstract} DeepCopy():User
+}
+
+class User{
+ + UserTypes :enum
+ + Id : int
+ + UserType : UserType
+ + Name : string
+ + User(userType : UserTypes)
+ + ShallowCopy() : User
+ + DeepCopy() : User
+}
+
+class Client{
+ + BuildPrototype()
+}
+
+Prototype <|-- User
+Client o.. Prototype
+@enduml
+----
+
 
 [source,c#]
 ----
@@ -1610,11 +1890,27 @@ namespace Prototype
 
 # Singleton Design Pattern
 
-
 - Dosya ekleme işleminde singleton design pattern kullanıldı.
 
 - Kullanılma amacı; dosya eklenirken her defasında nesne oluşturmaktansa bir kez oluşturulup her dosya işlemi için bu nesne kullanılır. Her seferinde yeni nesne oluşturulmasına gerek yoktur bu gibi durumlarda.
 
+#### UML
+
+[source,uml]
+----
+@startuml
+
+class ImportManager{
+- {static} ImportManager _instance
+- HastaneRandevuSistemiContext db 
+- ImportManager()
++ {static} GetInstance() : ImportManager
++ ImportFile(MyFile file) : bool  
+}
+
+ImportManager <-- ImportManager
+@enduml
+----
 [source,c#]
 ----
 ﻿using System;
