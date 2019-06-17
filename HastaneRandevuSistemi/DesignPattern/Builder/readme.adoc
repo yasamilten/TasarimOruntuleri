@@ -1,1 +1,110 @@
 # Builder Design Pattern
+
+- Yonetici, doktor veya hasta tipinde kullanıcı oluşturmak için builder design kullanıldı.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Builder
+{
+    public enum UserType
+    {
+        Hasta,
+        Doktor,
+        Yonetici
+    }
+
+    //Product
+    public class User
+    {
+        public UserType UserType { get; set; }
+        public override string ToString()
+        {
+            Console.WriteLine($"Giriş : {UserType}");
+            return base.ToString();
+        }
+
+    }
+
+
+    //Builder
+    public abstract class UserBuilder {
+        protected User user;
+
+        public User User
+        {
+            get
+            {
+                return user;
+            }
+        }
+        abstract public void SetUserType();
+    }
+
+    //ConcreteBuilder
+    public class HastaConcreteBuilder : UserBuilder
+    {
+        public HastaConcreteBuilder()
+        {
+            user = new User();
+        }
+
+        public override void SetUserType() => user.UserType = UserType.Hasta;
+    }
+
+    public class DoktorConcreteBuilder : UserBuilder
+    {
+        public DoktorConcreteBuilder()
+        {
+            user = new User();
+        }
+
+        public override void SetUserType() => user.UserType = UserType.Doktor;
+    }
+
+    public class YoneticiConcreteBuilder : UserBuilder
+    {
+        public YoneticiConcreteBuilder()
+        {
+            user = new User();
+        }
+
+        public override void SetUserType() => user.UserType = UserType.Yonetici;
+    }
+
+
+    //Director 
+    public class Director {
+        public void KullaniciOlustur(UserBuilder builder)
+        {
+            builder.SetUserType();
+        }
+    }
+    class BuilderDesign
+    {
+        static void Main(string[] args)
+        {
+            UserBuilder builder = new YoneticiConcreteBuilder();
+            Director    director = new Director();
+            director.KullaniciOlustur(builder);
+            builder.User.ToString();
+
+            builder = new HastaConcreteBuilder();
+            director.KullaniciOlustur(builder);
+            builder.User.ToString();
+
+            builder = new YoneticiConcreteBuilder();
+            director.KullaniciOlustur(builder);
+            builder.User.ToString();
+
+            Console.Read();
+        }
+    }
+}
+
+----
