@@ -344,6 +344,41 @@ namespace Builder
 
 - Randevu de ekle,sil metotları dışında hastaya randevu aldıysa randevusunun kaydedildiğine dair bilgi mesajı gönderen bir method eklendi decorator design pattern ile.
 
+### UML 
+
+[source,uml]
+----
+@startuml
+
+interface IRandevuIslemler{
+     Ekle(Randevu randevu):void
+     Sil(Randevu randevu):void
+}
+
+class RandevuIslemler{
+    + Ekle(Randevu randevu):void
+    +Sil(Randevu randevu):void
+}
+
+abstract RandevuIslemlerDecorator{
+ -randevuOperation : IRandevuIslemler
+ +RandevuIslemlerDecorator(randevuOperationn : IRandevuIslemler)
+ +Ekle(Randevu randevu) : void
+ +Sil(Randevu randevu) : void 
+}
+
+class RandevuMesajOperation {
+ + RandevuMesajOperation(randevuOperation : IRandevuIslemler)
+ + MesajGonder( mesaj : string) : void
+}
+
+IRandevuIslemler <|-- RandevuIslemler
+IRandevuIslemler <|-- RandevuIslemlerDecorator
+IRandevuIslemler  <--o RandevuIslemlerDecorator
+RandevuIslemlerDecorator <|-- RandevuMesajOperation
+@enduml
+----
+
 [source,c#]
 ----
 ﻿using System;
