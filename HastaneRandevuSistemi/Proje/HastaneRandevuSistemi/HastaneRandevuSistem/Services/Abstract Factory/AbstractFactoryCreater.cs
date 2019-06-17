@@ -1,0 +1,117 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HastaneRandevuSistem.Services.Abstract_Factory
+{
+
+
+	public abstract class Connection
+	{
+		public abstract bool Connect();
+		public abstract bool DisConnect();
+	}
+
+	public abstract class Command
+	{
+		public abstract void Execute(string query);
+
+	}
+
+	public class SqlConnection : Connection
+	{
+		public override bool Connect()
+		{
+			Console.WriteLine("Sql connection");
+			return true;
+		}
+
+		public override bool DisConnect()
+		{
+			Console.WriteLine("Sql disconnection");
+			return false;
+
+		}
+	}
+
+
+	public class SqlCommand : Command
+	{
+		public override void Execute(string query)
+		{
+			Console.WriteLine(query);
+		}
+	}
+
+
+	public class MsSqlConnection : Connection
+	{
+		public override bool Connect()
+		{
+			Console.WriteLine("MsSql connection");
+			return true;
+		}
+
+		public override bool DisConnect()
+		{
+			Console.WriteLine("MsSql disconnection");
+			return false;
+		}
+	}
+
+	public class MsSqlCommand : Command
+	{
+		public override void Execute(string query)
+		{
+			Console.WriteLine(query);
+		}
+	}
+
+
+	public abstract class DatabaseFactory
+	{
+		public abstract Connection CreateConnection();
+		public abstract Command CreateCommand();
+	}
+
+	public class SqlDatabaseFactory : DatabaseFactory
+	{
+		public override Command CreateCommand() => new SqlCommand();
+
+		public override Connection CreateConnection() => new SqlConnection();
+	}
+
+	public class MsSqlDatabaseFactory : DatabaseFactory
+	{
+		public override Command CreateCommand() => new MsSqlCommand();
+
+		public override Connection CreateConnection() => new MsSqlConnection();
+	}
+
+	public class Creater
+	{
+		DatabaseFactory _databaseFactory;
+		Connection _connection;
+		Command _command;
+
+		public Creater(DatabaseFactory databaseFactory)
+		{
+			_databaseFactory = databaseFactory;
+			_command = _databaseFactory.CreateCommand();
+			_connection = _databaseFactory.CreateConnection();
+
+			_connection.Connect();
+			_connection.DisConnect();
+
+		}
+
+		public DatabaseFactory Database()
+		{
+			return _databaseFactory;
+
+		}
+	}
+
+}

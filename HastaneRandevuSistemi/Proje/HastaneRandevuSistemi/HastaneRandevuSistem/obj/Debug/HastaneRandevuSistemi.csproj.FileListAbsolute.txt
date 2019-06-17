@@ -1,0 +1,7 @@
+C:\Users\yaşam\Desktop\TASARIM ÖRÜNTÜLERİ\proje\HastaneRandevuSistemi\HastaneRandevuSistem\bin\Debug\HastaneRandevuSistem.exe.config
+C:\Users\yaşam\Desktop\TASARIM ÖRÜNTÜLERİ\proje\HastaneRandevuSistemi\HastaneRandevuSistem\bin\Debug\HastaneRandevuSistem.exe
+C:\Users\yaşam\Desktop\TASARIM ÖRÜNTÜLERİ\proje\HastaneRandevuSistemi\HastaneRandevuSistem\bin\Debug\HastaneRandevuSistem.pdb
+C:\Users\yaşam\Desktop\TASARIM ÖRÜNTÜLERİ\proje\HastaneRandevuSistemi\HastaneRandevuSistem\obj\Debug\HastaneRandevuSistemi.csprojAssemblyReference.cache
+C:\Users\yaşam\Desktop\TASARIM ÖRÜNTÜLERİ\proje\HastaneRandevuSistemi\HastaneRandevuSistem\obj\Debug\HastaneRandevuSistemi.csproj.CoreCompileInputs.cache
+C:\Users\yaşam\Desktop\TASARIM ÖRÜNTÜLERİ\proje\HastaneRandevuSistemi\HastaneRandevuSistem\obj\Debug\HastaneRandevuSistem.exe
+C:\Users\yaşam\Desktop\TASARIM ÖRÜNTÜLERİ\proje\HastaneRandevuSistemi\HastaneRandevuSistem\obj\Debug\HastaneRandevuSistem.pdb
