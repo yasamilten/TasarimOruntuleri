@@ -1,1 +1,1540 @@
 
+# Abstract Factory Design Pattern
+
+- Farklı veritabanlarını oluşturup bağlantı kurabilmek için abstract factory design kullanıldı.
+
+[source,c#]
+----
+    
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Odev_06
+{
+    public abstract class Connection
+    {
+        public abstract bool Connect();
+        public abstract bool DisConnect();
+    }
+
+    public abstract class Command
+    {
+        public abstract void Execute(string query);
+
+    }
+
+    public class SqlConnection : Connection
+    {
+        public override bool Connect()
+        {
+            Console.WriteLine("Sql connection");
+            return true;
+        }
+
+        public override bool DisConnect()
+        {
+            Console.WriteLine("Sql disconnection");
+            return false;
+
+        }
+    }
+
+
+    public class SqlCommand : Command
+    {
+        public override void Execute(string query)
+        {
+            Console.WriteLine(query);
+        }
+    }
+
+
+    public class MsSqlConnection : Connection
+    {
+        public override bool Connect()
+        {
+            Console.WriteLine("MsSql connection");
+            return true;
+        }
+
+        public override bool DisConnect()
+        {
+            Console.WriteLine("MsSql disconnection");
+            return false;
+        }
+    }
+
+    public class MsSqlCommand : Command
+    {
+        public override void Execute(string query)
+        {
+            Console.WriteLine(query);
+        }
+    }
+
+
+    public abstract class DatabaseFactory
+    {
+        public abstract Connection CreateConnection();
+        public abstract Command CreateCommand();
+    }
+
+    public class SqlDatabaseFactory : DatabaseFactory
+    {
+        public override Command CreateCommand() => new SqlCommand();
+
+        public override Connection CreateConnection() => new SqlConnection();
+    }
+
+    public class MsSqlDatabaseFactory : DatabaseFactory
+    {
+        public override Command CreateCommand() => new MsSqlCommand();
+
+        public override Connection CreateConnection() => new MsSqlConnection();
+    }
+
+    public class Creater
+    {
+        DatabaseFactory _databaseFactory;
+        Connection _connection;
+        Command _command;
+
+        public  Creater(DatabaseFactory databaseFactory)
+        {
+            _databaseFactory = databaseFactory;
+            _command = _databaseFactory.CreateCommand();
+            _connection = _databaseFactory.CreateConnection();
+
+            _connection.Connect();
+            _connection.DisConnect();
+
+        }
+
+        public DatabaseFactory Database() {
+            return _databaseFactory;
+
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Creater create = new Creater(new MsSqlDatabaseFactory());
+            create.Database().CreateCommand().Execute("Select*from Patient");
+            Console.WriteLine("-----------------------------");
+            create = new Creater(new SqlDatabaseFactory());
+            create.Database().CreateCommand().Execute("Select*from Patient");
+            Console.Read();
+        }
+    }
+}
+----
+
+
+# Builder Design Pattern
+
+- Yonetici, doktor veya hasta tipinde kullanıcı oluşturmak için builder design kullanıldı.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Builder
+{
+    public enum UserType
+    {
+        Hasta,
+        Doktor,
+        Yonetici
+    }
+
+    //Product
+    public class User
+    {
+        public UserType UserType { get; set; }
+        public override string ToString()
+        {
+            Console.WriteLine($"Giriş : {UserType}");
+            return base.ToString();
+        }
+
+    }
+
+
+    //Builder
+    public abstract class UserBuilder {
+        protected User user;
+
+        public User User
+        {
+            get
+            {
+                return user;
+            }
+        }
+        abstract public void SetUserType();
+    }
+
+    //ConcreteBuilder
+    public class HastaConcreteBuilder : UserBuilder
+    {
+        public HastaConcreteBuilder()
+        {
+            user = new User();
+        }
+
+        public override void SetUserType() => user.UserType = UserType.Hasta;
+    }
+
+    public class DoktorConcreteBuilder : UserBuilder
+    {
+        public DoktorConcreteBuilder()
+        {
+            user = new User();
+        }
+
+        public override void SetUserType() => user.UserType = UserType.Doktor;
+    }
+
+    public class YoneticiConcreteBuilder : UserBuilder
+    {
+        public YoneticiConcreteBuilder()
+        {
+            user = new User();
+        }
+
+        public override void SetUserType() => user.UserType = UserType.Yonetici;
+    }
+
+
+    //Director 
+    public class Director {
+        public void KullaniciOlustur(UserBuilder builder)
+        {
+            builder.SetUserType();
+        }
+    }
+    class BuilderDesign
+    {
+        static void Main(string[] args)
+        {
+            UserBuilder builder = new YoneticiConcreteBuilder();
+            Director    director = new Director();
+            director.KullaniciOlustur(builder);
+            builder.User.ToString();
+
+            builder = new HastaConcreteBuilder();
+            director.KullaniciOlustur(builder);
+            builder.User.ToString();
+
+            builder = new YoneticiConcreteBuilder();
+            director.KullaniciOlustur(builder);
+            builder.User.ToString();
+
+            Console.Read();
+        }
+    }
+}
+
+----
+
+# Decorator Design Pattern
+
+- Randevu de ekle,sil metotları dışında hastaya randevu aldıysa randevusunun kaydedildiğine dair bilgi mesajı gönderen bir method eklendi decorator design pattern ile.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DecoratorDesignPattern
+{
+
+    class DecoratorDesignPattern
+    {
+
+        static void Main(string[] args)
+        {
+            Randevu randevu = new Randevu();
+            //decorator uygulanacak component nesnesi
+            RandevuIslemler randevuIsl = new RandevuIslemler();
+            //mesaj decorator nesnesine component i veriyoruz
+            RandevuMesajOperation mHasta = new RandevuMesajOperation(randevuIsl);
+            //decorator üzerinden component yeni metotlara sahip oluyor.
+            mHasta.Ekle(randevu);
+            mHasta.MesajGonder("Randevu kayıt edildi");
+            Console.ReadKey();
+        }
+    }
+
+    //Component
+    interface IRandevuIslemler
+    {
+        void Ekle(Randevu randevu);
+        void Sil(Randevu randevu);
+    }
+
+    //ConcreteComponent
+    class RandevuIslemler : IRandevuIslemler
+    {
+        //Projede veritabanı bağlanıcak. Bu metot veritabanındaki Randevu tablosuna kayıt eklicek
+        public void Ekle(Randevu randevu)
+        {
+
+            //_db.Randevus.Add(randevu);
+            Console.WriteLine("hasta randevu eklendi.");
+        }
+
+        //Projede veritabanı bağlanıcak. Bu metot veritabanındaki Randevu tablosundan randevu silicek
+        public void Sil(Randevu randevu)
+        {
+            //_db.Randevus.Remove(randevu);
+            Console.WriteLine("hasta randevu silindi.");
+        }
+    }
+
+    //Decorator
+    abstract class RandevuIslemlerDecorator : IRandevuIslemler
+    {
+        private IRandevuIslemler randevuOperation;
+        public RandevuIslemlerDecorator(IRandevuIslemler randevuOperationn)
+        {
+            this.randevuOperation = randevuOperationn;
+        }
+
+        public void Ekle(Randevu randevu)
+        {
+            randevuOperation.Ekle(randevu);
+        }
+
+        public void Sil(Randevu randevu)
+        {
+            randevuOperation.Sil(randevu);
+        }
+    }
+
+    //ConcreteDecorator
+    class RandevuMesajOperation : RandevuIslemlerDecorator
+    {
+        public RandevuMesajOperation(IRandevuIslemler randevuOperation) : base(randevuOperation)
+        {
+        }
+        public void MesajGonder(string mesaj)
+        {
+            Console.WriteLine("Hastaya '{0}' mesajı gönderildi.", mesaj);
+        }
+    }
+
+
+    public abstract class User
+    {
+        public int Id { get; set; }
+        public string TC { get; set; }
+        public string Ad { get; set; }
+        public string Soyad { get; set; }
+        public string Telefon { get; set; }
+        public bool Cinsiyet { get; set; }
+        public DateTime DogumTarihi { get; set; }
+        public string DogumYeri { get; set; }
+        public string BabaAdi { get; set; }
+        public string AnneAdi { get; set; }
+        public bool AktifMi { get; set; }
+        public string Sifre { get; set; }
+
+    }
+
+    public class Hasta : User
+    {
+
+    }
+    public class Doktor : User
+    {
+        public int UzmanlikAlanId { get; set; }
+    }
+
+    public class Hastane
+    {
+        public int Id { get; set; }
+        public string Adi { get; set; }
+
+        public int IlceId { get; set; }
+    }
+
+    public class Il
+    {
+        public int Id { get; set; }
+        public string Adi { get; set; }
+    }
+
+    public class ILce
+    {
+        public int Id { get; set; }
+        public int IlId { get; set; }
+        public string Adi { get; set; }
+    }
+    class Randevu
+    {
+        public int Id { get; set; }
+        public int HastaId { get; set; }
+        public int HastaneId { get; set; }
+        public int DoktorId { get; set; }
+        public DateTime RandevuTarihi { get; set; }
+        public bool AktifMi { get; set; }
+    }
+}
+
+----
+
+
+# Factory Design Pattern
+
+- Kullanıcı tiplerine göre kullanıcı oluşturmak için Factory method design pattern kullanıldı. Kullanıcı tipleri ; hasta,doktor ve yöneticidir. Gönderilen tipte kullanıcı oluşturulur ve geriye döndürülür.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Odev_06
+{
+    public abstract class User
+    {
+        public abstract void Login();
+        public abstract void ManageUserInfo();
+    }
+
+    public class Yonetici : User
+    {
+
+        public override void Login()
+        {
+            Console.WriteLine("Yönetici giriş yaptı");
+        }
+
+        public override void ManageUserInfo()
+        {
+            Console.WriteLine("Yönetici hesap bilgilerini güncelliyor.");
+        }
+    }
+
+    public class Hasta : User
+    {
+        public override void Login()
+        {
+            Console.WriteLine("Hasta giriş yaptı");
+        }
+
+        public override void ManageUserInfo()
+        {
+            Console.WriteLine("Hasta hesap bilgilerini güncelliyor.");
+        }
+    }
+
+    public class Doktor : User
+    {
+        public override void Login()
+        {
+            Console.WriteLine("Doktor giriş yaptı");
+        }
+
+        public override void ManageUserInfo()
+        {
+            Console.WriteLine("Doktor hesap bilgilerini güncelliyor.");
+        }
+    }
+
+    public enum UserType
+    {
+        Hasta,
+        Yonetici,
+        Doktor
+    }
+
+    public class Creater
+    {
+        public User FactoryMethod(UserType userType)
+        {
+
+            User user = null;
+
+            switch (userType)
+            {
+                case UserType.Hasta:
+                    user = new Hasta();
+                    break;
+                case UserType.Yonetici:
+                    user = new Yonetici();
+                    break;
+                case UserType.Doktor:
+                    user = new Doktor();
+                    break;
+                default:
+                    break;
+            }
+
+            return user;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Creater create = new Creater();
+            var user=create.FactoryMethod(UserType.Hasta);
+            user.Login();
+            user.ManageUserInfo();
+
+            user=create.FactoryMethod(UserType.Yonetici);
+            user.Login();
+            user.ManageUserInfo();
+
+            user =create.FactoryMethod(UserType.Hasta);
+            user.Login();
+            user.ManageUserInfo();
+            Console.Read();
+        }
+    }
+}
+
+----
+
+
+
+# Iterator Design Pattern
+
+- Hasta listesinde bulunan hastaları listelemek için kullanıldı.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication1
+{
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            PatientAggregate aggregate = new PatientAggregate();
+            aggregate.Add(new Patient { Tc = "12333333333", Ad = "Yaşam", Soyad = "İLTEN" });
+            aggregate.Add(new Patient { Tc = "45622222222", Ad = "Gizem", Soyad = "Koç" });
+            aggregate.Add(new Patient { Tc = "22222222222", Ad = "Aslı", Soyad = "Dere" });
+
+            Console.WriteLine("Hasta Listesi");
+            IIterator iterasyon = aggregate.CreateIterator();
+            while (iterasyon.HasItem())
+            {
+                Console.WriteLine("{0} - {1} {2}", iterasyon.CurrentItem().Tc, iterasyon.CurrentItem().Ad, iterasyon.CurrentItem().Soyad);
+                iterasyon.NextItem();
+            }
+
+            Console.Read();
+        }
+
+    }
+
+    public class Patient
+    {
+        public int Id { get; set; }
+        public string Tc { get; set; }
+        public string Ad { get; set; }
+        public string Soyad { get; set; }
+        public string Telefon { get; set; }
+        public DateTime dogumTarihi { get; set; }
+        public string DogumYeri { get; set; }
+        public string BabaAdi { get; set; }
+        public string AnneAdi { get; set; }
+    }
+
+
+    public interface IAggregate
+    {
+        IIterator CreateIterator();
+    }
+
+    public interface IIterator
+    {
+        //Bir sonraki adımda hasta var mı?
+        bool HasItem();
+
+        //Bir sonraki adımdaki hastayı getir.
+         Patient NextItem();
+
+        //Mevcut hastayı getir.
+         Patient CurrentItem();
+    }
+
+    public class PatientAggregate : IAggregate
+    {
+        public List<Patient> PatientList = new List<Patient>();
+
+        public void Add(Patient Model)
+        {
+            PatientList.Add(Model);
+        }
+
+        public Patient GetItem(int index)
+        {
+            return PatientList[index];
+        }
+
+        public int Count { get { return PatientList.Count; } }
+
+
+        public IIterator CreateIterator()
+        {
+            return new PatientIterator(this);
+        }
+    }
+
+    class PatientIterator : IIterator
+    {
+        PatientAggregate aggregate;
+        int currentindex;
+
+        public PatientIterator(PatientAggregate aggregate)
+        {
+            this.aggregate = aggregate;
+        }
+
+        public Patient CurrentItem()
+        {
+            return aggregate.GetItem(currentindex);
+        }
+        public bool HasItem()
+        {
+            if (currentindex < aggregate.Count)
+                return true;
+            return false;
+        }
+        public Patient NextItem()
+        {
+            if (HasItem())
+                return aggregate.GetItem(currentindex++);
+            return new Patient();
+        }
+    }
+
+}
+
+
+
+----
+
+# Mediator Design Pattern
+
+- Hastanelerden belirtilen saatte randevu isteyen birden fazla hasta olursa ilk randevuyu isteyen kişiye randevu oluşturulur,o saatter-ki randevu dolduğu için diğer isteyenlere verilmez o saatteki randevu.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MediatorDesignPattern
+{
+    class MediatorDesignPattern
+    {
+        static void Main(string[] args)
+        {
+            //ilk olarak hastaların bağlı olacağı Hastaneler(yöneticiler) oluşturulur
+            IYonetici yonetici = new YasamHastanesi();
+            //Hasta nesneleri oluşturulur.
+            AbsHasta hasta_01 = new YasamHastanesiHastasi { hastaTC = "1234567890" };
+            AbsHasta hasta_02 = new YasamHastanesiHastasi { hastaTC = "9876543210" };
+
+
+            //hasta nesneleri Yonetici nesnesine kayıt ettirilir.
+            //Hasta nesnesindeki IliskiliYonetici nesnesi yoneticş nesnesindeki HastaKayit metodunda yapılır.
+            yonetici.HastaKayit(hasta_01);
+            yonetici.HastaKayit(hasta_02);
+
+            //sadece ilk randevu isteyene o saatteki randevu verilir.
+            hasta_01.RandevuOnayIste();
+            hasta_02.RandevuOnayIste();
+
+            Console.ReadKey();
+        }
+    }
+
+    //Mediator
+      interface IYonetici
+    {
+        //Yoneticinin gerçekleştirmesi gereken işlemler
+         void HastaKayit(AbsHasta hasta);
+         void RandevuOnayVer(string hastaTC);
+
+
+    }
+
+    //Colleague 
+     abstract class AbsHasta
+    {
+
+        //Hastanın hangi yonetici ile irtibata geçmesi gerektiğini tutması gerekir.
+        public IYonetici IliskiliYonetici { get; set; }
+        public string hastaTC { get; set; }
+        public bool RandevuOnayi { get; set; }
+
+        public void RandevuOnayIste()
+        {
+            //hastanın bağlı olduğu yöneticiden randevu onayı istiyor
+            IliskiliYonetici.RandevuOnayVer(hastaTC);
+        }
+
+        public virtual void SetRandevuOnayi(bool onay)
+        {
+            //yönetici randevu onayı isteyen hastaya bu metot ile cevap verir.
+            RandevuOnayi = onay;
+            if (RandevuOnayi)
+                Console.WriteLine("Randevu için onay verildi");
+            else
+                Console.WriteLine("Randevu için onay verilmedi.");
+        }
+    }
+
+    //ConcreteMediator yapısı
+    class YasamHastanesi : IYonetici
+    {
+        //Yonetici(hastane) kendisine bağlı olan hastaların bilgisini tutmak zorunda ki isteklere buna göre cevap verebilsin.
+        private List<AbsHasta> _HastaListe= new List<AbsHasta>();
+        public void HastaKayit(AbsHasta _hasta)
+        {
+            _HastaListe.Add(_hasta);
+            //Listeye eklenen AbsHasta nesnesine yöneticisinin bu sınıf olduğunu bildiriyoruz.
+            _hasta.IliskiliYonetici = this;
+        }
+
+   
+        public void RandevuOnayVer(string hastaTC)
+        {
+            bool onay = true;
+            // eğer başka bir hastaya iniş izni verilmedi ise ilk randevu isteyen hastaya izin ver
+            if (_HastaListe.Where(u => u.RandevuOnayi == true).Count() > 0)
+                onay = false;
+            //hastanın cevap alması için barındırdığı metoda cevap verilir.
+            _HastaListe.Where(u => u.hastaTC == hastaTC).Single().SetRandevuOnayi(onay);
+        }
+    }
+
+    //ConcreteColleague1
+    class YasamHastanesiHastasi : AbsHasta
+    {
+        //SetRandevuOnayi metotu AbsHasta abstract sınıfından gelir.
+        //Yonetici cevabı mu metot ile verir.
+        public override void SetRandevuOnayi(bool onay)
+        {
+            Console.WriteLine("TC:{0} li hasta randevu onay bekliyor.", hastaTC);
+            base.SetRandevuOnayi(onay);
+        }
+    }
+
+    #region Mediator Design Pattern
+    /* 
+     mediator tasarım deseninde 4 temel yapı bulunur.
+    - Mediator: Nesneler arasındaki ilişkiyi sağlayacak metotların tanımlı olduğu arayüz. 
+    - ConcreteMediator: Nesneler arasındaki ilişkiyi sağlayacak gerçek nesnedir. Mediator arayüzünü uygular. İçinde Colleague ara yüzünden türeyen nesnelerin listesini barındırır.
+    - Colleague: ConcreteMediator u kullanarak işlem gerçekleştirecek olan nesnelerin uygulaması gereken arayüzü temsil eder. Kendi içinde ConcreteMediator nesnesi barındırır.
+    - ConcreteColleague: ConcreteMediator üzerinden birbirleri ile ilişkili nesnelerdir. Colleague arayüzünü uygularlar.
+     */
+    #endregion
+}
+
+----
+
+# Memento Design Pattern
+
+- Hastaya ait belli bir zamandaki randevuyu kaydetmek ve tekrar kullanabilmek için memento design pattern kullanıldı.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MementoDesignPattern
+{
+    class MementoDesignPattern
+    {
+        static void Main(string[] args)
+        {
+            Il il = new Il { Id = 1, Adi = "İstanbul" };
+            ILce ilce = new ILce { Id = 1, Adi = "Pendik", IlId = 1 };
+            Hastane hastane = new Hastane { Id = 1, IlceId = 1, Adi = "XYZ Eğitim Araştırma Hastanesi" };
+            Bolum bolum = new Bolum { Id = 1, BolumAdi = "Dahiliye" };
+            Doktor doktor = new Doktor
+            {
+                Id = 1,
+                TC = "11111111111",
+                Ad = "Burak",
+                Soyad = "Aslan",
+                Telefon = "533333333",
+                Cinsiyet = true,
+                DogumTarihi = DateTime.Parse("10.10.1960"),
+                DogumYeri = "Pendik",
+                AnneAdi = "Aslı",
+                BabaAdi = "Ahmet",
+                UzmanlikAlanId = 1,
+                AktifMi = true,
+                Sifre = "1234k"
+            };
+
+            Doktor doktor2 = new Doktor
+            {
+                Id = 2,
+                TC = "1113536211111",
+                Ad = "Aslı",
+                Soyad = "Dere",
+                Telefon = "2343535223553",
+                Cinsiyet = false,
+                DogumTarihi = DateTime.Parse("10.10.1980"),
+                DogumYeri = "Kadıköy",
+                AnneAdi = "Merve",
+                BabaAdi = "Mahmut",
+                UzmanlikAlanId = 1,
+                AktifMi = true,
+                Sifre = "123467"
+            };
+
+            DoktorCalistigiHastaneler doktorCalistigiHastaneler = new DoktorCalistigiHastaneler
+            {
+                Id = 1,
+                DoktorId = 1,
+                HastaneId = 1,
+                HastaneGirisTarihi = DateTime.Parse("01.02.2000"),
+                HastaneCikisTarihi = (DateTime?)null
+            };
+
+            Hasta hasta = new Hasta
+            {
+                Id = 1,
+                TC = "123456789330",
+                Ad = "Gizem",
+                Soyad = "Kara",
+                Telefon = "5111111111",
+                Cinsiyet = false,
+                DogumTarihi = DateTime.Parse("04.02.2001"),
+                DogumYeri = "Kartal",
+                AnneAdi = "Ece",
+                BabaAdi = "Ekrem",
+                AktifMi = true,
+                Sifre = "12345"
+
+            };
+
+            Randevu randevu = new Randevu { Id = 1, HastaId = 1, DoktorId = 1, RandevuTarihi = DateTime.Parse("01.02.2019"), AktifMi = false };
+            Console.WriteLine("Randevu Id={0}\n Hasta Id={1}\n Doktor Id={2}\n Randevu Tarihi={3}", randevu.Id, randevu.HastaId, randevu.DoktorId, randevu.RandevuTarihi);
+            Console.WriteLine("------------------------------------------------------------------");
+
+            RandevuCareTaker Taker = new RandevuCareTaker();
+            //T anında ilgili Randevu nesnesini kopyalıyoruz ve
+            //CareTaker nesnesi içerisindeki Memento'ya bağlıyoruz.
+            Taker.Memento = randevu.Kaydet();
+
+            randevu = new Randevu { Id = 2, HastaId = 1, DoktorId = 2, RandevuTarihi = DateTime.Parse("11.11.2019"), AktifMi = true };
+            Console.WriteLine("Randevu Id={0}\n Hasta Id={1}\n Doktor Id={2}\n Randevu Tarihi={3}", randevu.Id, randevu.HastaId, randevu.DoktorId, randevu.RandevuTarihi);
+            Console.WriteLine("------------------------------------------------------------------");
+
+            //T anında kopyaladığımız nesneye CareTaker üzerinden erişiyor
+            //ve ilgili Originator nesnemize load ediyoruz.
+            randevu.OncekiniYukle(Taker.Memento);
+            Console.WriteLine("Randevu Id={0}\n Hasta Id={1}\n Doktor Id={2}\n Randevu Tarihi={3}", randevu.Id, randevu.HastaId, randevu.DoktorId, randevu.RandevuTarihi);
+
+            Console.ReadKey();
+
+        }
+    }
+
+
+    #region Entities
+    public abstract class User
+    {
+        public int Id { get; set; }
+        public string TC { get; set; }
+        public string Ad { get; set; }
+        public string Soyad { get; set; }
+        public string Telefon { get; set; }
+        public bool Cinsiyet { get; set; }
+        public DateTime DogumTarihi { get; set; }
+        public string DogumYeri { get; set; }
+        public string BabaAdi { get; set; }
+        public string AnneAdi { get; set; }
+        public bool AktifMi { get; set; }
+        public string Sifre { get; set; }
+
+    }
+
+    public class Hasta : User
+    {
+
+    }
+    public class Doktor : User
+    {
+        public int UzmanlikAlanId { get; set; }
+    }
+
+    public class Yonetici
+    {
+        public int Id { get; set; }
+    }
+
+    //Originator Nesnesi
+    public class Randevu
+    {
+        public int Id { get; set; }
+        public int HastaId { get; set; }
+        public int HastaneId { get; set; }
+        public int DoktorId { get; set; }
+        public DateTime RandevuTarihi { get; set; }
+        public bool AktifMi { get; set; }
+
+        //t anında nesneyi tutacak metod
+        public RandevuMemento Kaydet()
+        {
+            return new RandevuMemento
+            {
+                Id = this.Id,
+                DoktorId = this.DoktorId,
+                HastaId = this.HastaId,
+                HastaneId = this.HastaneId,
+                RandevuTarihi = this.RandevuTarihi,
+                AktifMi = this.AktifMi
+            };
+        }
+
+
+        //t anında nesneyi bize ulaştıracak metot
+        public void OncekiniYukle(RandevuMemento Memento)
+        {
+            this.Id = Memento.Id;
+            this.DoktorId = Memento.DoktorId;
+            this.HastaId = Memento.HastaId;
+            this.HastaneId = HastaneId;
+            this.RandevuTarihi = Memento.RandevuTarihi;
+            this.AktifMi = Memento.AktifMi;
+        }
+
+
+    }
+
+
+    //Memento sınıfı : istenilen zaman aralığında objenin kaydetmesini istediğimiz alanları tanımlandı
+    public class RandevuMemento
+    {
+        public int Id { get; set; }
+        public int HastaId { get; set; }
+        public int HastaneId { get; set; }
+        public int DoktorId { get; set; }
+        public DateTime RandevuTarihi { get; set; }
+        public bool AktifMi { get; set; }
+    }
+
+    //CareTaker nesnesi
+    public class RandevuCareTaker
+    {
+        public RandevuMemento Memento { get; set; }
+    }
+    public class Bolum
+    {
+        public int Id { get; set; }
+        public string BolumAdi { get; set; }
+    }
+
+    public class Hastane
+    {
+        public int Id { get; set; }
+        public string Adi { get; set; }
+
+        public int IlceId { get; set; }
+    }
+
+    public class Il
+    {
+        public int Id { get; set; }
+        public string Adi { get; set; }
+    }
+
+    public class ILce
+    {
+        public int Id { get; set; }
+        public int IlId { get; set; }
+        public string Adi { get; set; }
+    }
+
+    public class DoktorCalistigiHastaneler
+    {
+        public int Id { get; set; }
+        public int DoktorId { get; set; }
+        public int HastaneId { get; set; }
+        public DateTime HastaneGirisTarihi { get; set; }
+        public DateTime? HastaneCikisTarihi { get; set; }
+    }
+    #endregion
+
+    #region Memento Design Pattern
+    /*
+     Memento Design Pattern, elimizdeki mevcut nesnenin herhangi bir T anındaki durumunu kayda alarak,
+     sonradan oluşabilecek değişiklikler üzerine tekrardan o kaydı elde etmemizi sağlayan bir desendir.
+     Burada mevcut nesnenin özel bir halinden bahsetmemiz mümkündür. O hal ilgili tasarım kalıbı sayesinde sonradan da elde edilebilecektir.   
+     */
+    #region Originator
+    /*    
+      Yaratıcı, mucit, üretken olarak ifade edebileceğimiz bu nesne kopyası saklanacak olan nesneyi ifade etmektedir. 
+      Bu nesne, kendi kopyasının oluşturulmasından sorumlu olduğu gibi geri yüklenmesinden de sorumludur.
+    */
+    #endregion
+
+    #region Memento
+    /*
+     Kopyalanacak nesnenin hangi özelliklerinin tutulacağı, bir başka deyişle hangi değerlerinin işleneceğini belirttiğimiz nesnedir.
+     */
+    #endregion
+
+    #region CareTaker
+    /*   
+        Bakıcı olarak nitelendirilen bu nesne, Memento referansını barındırmakta ve yapılacak tüm işlemlerin organizasyonunu sağlamaktadır.
+     */
+    #endregion
+    #endregion
+
+
+}
+
+----
+
+
+# Object Pool Design Pattern
+
+- Projede sisteme giren hasta sayısını sınırlandırmak için opject pool design pattern kullanıldı. Sisteme aynı anda 1000 hasta giriş yapabilecektir.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+
+namespace ObjectPool
+{
+
+    public abstract class Patient
+    {
+        public abstract void Login(string email,string password);
+    }
+
+    internal class RequestPatient : Patient
+    {
+        public override void Login(string email,string password)
+        {
+            //database de users tablosundan sorgulatılacak,varsa giriş yapılacak yoksa hata verilecek.
+            Console.WriteLine("Patient is logined");
+        }
+    }
+
+
+    //PatientPool sınıfı thread-safe Singleton Pattern’i sağlamaktadır. Bu sayede proje üzerinde sadece tek bir PatientPool sınıfı kullanabilir halde olacaktır.
+
+    //sınıf tamamen thread-safe olarak kodlanmıştır.
+    //Bunu sağlamak için ConcurrentBag<T> adlı.NET sınıfı ile birlikte AcquireObject ve IncreaseSize metotlarını lock kullanarak thread-safe yapmış bulunuyoruz.
+    public class PatientPool
+    {
+        //Lazy = Nesne kullanılmadığı sürece oluşturulmaz anlamına gelmektedir
+        private static Lazy<PatientPool> instance = new Lazy<PatientPool>(() => new PatientPool());
+        public static PatientPool Instance { get; } = instance.Value;
+        public int Size { get { return _currentSize; } }
+        public int TotalObject { get { return _counter; } }
+
+        //Sınıfımızda maksimum üretilebilecek Patient sayısını ayarlamamız için _currentSize değişkeni bulunmaktadır.
+        //Havuzun başlangıç boyutu 1000 olarak belirlendi ancak  bu değişebilir.
+        private const int defaultSize = 3; //test edebilmek için düşük boyutlandırıldı
+        private ConcurrentBag<Patient> _bag = new ConcurrentBag<Patient>();
+        private volatile int _currentSize;
+        private volatile int _counter;
+        private static readonly object _lockObject = new object(); //Kod bloğunu kilitlemek için kullanıyoruz.
+
+        private PatientPool()
+            : this(defaultSize)
+        {
+        }
+        private PatientPool(int size)
+        {
+            _currentSize = size;
+        }
+
+        // AcquireObject :öncelikle _bag listemizden obje almaya çalışıyoruz.
+        //_bag.TryTake(out Client item) kodu ile aldığımız objenin durumunu kontrol ediyoruz eğer obje doğru ise objemizi döndürüyoruz eğer obje yok ise havuzun durumuna bakarak yeni bir obje oluşturuyoruz yada null pointer dönderiyoruz.
+        public Patient AcquireObject()
+        {
+            if (!_bag.TryTake(out Patient item))
+            {
+                lock (_lockObject)  //thread güvenliğini sağlamak için kullanılır. Yapılan iş bitmeden başka bir thread işe başlayamayacak.
+
+                {
+                    if (item == null)
+                    {
+                        if (_counter >= _currentSize)
+                            return null;
+
+                        item = new RequestPatient();
+
+                        _counter++;
+
+                    }
+                }
+
+            }
+
+            return item;
+        }
+
+
+        //ReleaseObject metotu ile de almış olduğumuz objeleri sisteme geri iade ederek yeniden kullanıma sunuyoruz.Geri bırakılmadığı taktirde, kaynakların doğru kullanımı gerçekleşemeyecektir.
+        public void ReleaseObject(Patient item)
+        {
+            _bag.Add(item);
+        }
+
+        //IncreaseSize metotu havuzun boyutunu büyütmek için kullanılmaktadır.Tabii ki sisteminizin gerekliliklerine göre bu metot değiştirilebilir.
+        public void IncreaseSize()
+        {
+            lock (_lockObject)
+            {
+                _currentSize++;
+            }
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            Console.WriteLine("Havuzun boyutu {0}", PatientPool.Instance.Size);
+
+            Console.WriteLine("PatientPooldan bir nesne alıyoruz.");
+            var patient1 = PatientPool.Instance.AcquireObject();
+            patient1.Login("test@gmail.com","1234");
+
+
+            Console.WriteLine("PatientPooldan aldığımız nesneyi bırakıyoruz");
+            if (patient1 != null)
+                PatientPool.Instance.ReleaseObject(patient1);
+
+
+            //Burada havuzda bulunan tüm nesneler kullanılmaktadır.
+            var patients = new List<Patient>();
+            for (int i = 0; i < PatientPool.Instance.Size; i++)
+            {
+                patients.Add(PatientPool.Instance.AcquireObject());
+            }
+
+            Console.WriteLine("PatientPool'da bulunan tüm nesneler listeye eklendi. Böylece havuzda hiç nesne kalmadı.");
+
+            var nullPatient = PatientPool.Instance.AcquireObject();  //Havuzda bulunan tüm nesneleri kullandığımız için null döner.
+
+            if (nullPatient == null)
+                Console.WriteLine("Patient poolda hiç nesne bulunmamaktadır. Lütfen bekleyiniz");
+
+
+            #region Yeni nesne oluştururken havuzumuzda nesne yoksa ,havuzun boyutunu bir artırarak yeni nesneyi kullanabiliriz.
+            //Console.WriteLine("Havuzun boyutunu arttırıyoruz");
+            //PatientPool.Instance.IncreaseSize();
+
+            //Console.WriteLine("Yeni bir Patient sınıfı ediniyoruz.");
+            //var newPatient = PatientPool.Instance.AcquireObject();
+
+            //newPatient.Connect();
+
+            //Console.WriteLine("Edindiğimiz sınıfı geri veriyoruz.");
+            //if (newPatient != null)
+            //    PatientPool.Instance.ReleaseObject(newPatient);
+
+            #endregion
+
+            Console.WriteLine("Listedeki tüm Patient nesnelerini geri bırakıyoruz.");
+
+            foreach (var item in patients)
+                PatientPool.Instance.ReleaseObject(item);
+
+            Console.ReadKey();
+        }
+    }
+}
+
+#region  ConcurrentBag<T>
+
+/*
+Concurrent Collections deyince aklımıza Thread-Safe koleksiyon tipleri gelmelidir. 
+Bu sınıf sırasız bir yapıda nesneleri bir koleksiyon içinde barındırır.
+Bu sınıfı ancak elemanları işlerken hangi sırada işlediğinizin kesinlikle önemi olmadığı durumlarda kullanmak  fayda verecektir.
+Zira, bu sınıf gerek yeni bir eleman eklerken gerekse koleksiyondan bir eleman alırken iş parçacıkları arasında hemen hemen hiç bir zaman bir yarış yada çekişme olmaksızın çalışabilmelerini sağlamaktadır.
+Aslında içeride bu sınıfla çalışan her iş parçacığı için ayrı bir liste oluşturulmaktadır.
+Bu sayede de normal şartlar altında her iş parçacığı kendine ait liste üzerinde çalıştığından iş parçacıkları arası bir çekişme söz konusu olmamaktadır.
+Normalde listeden bir eleman almak istediğinizde yığın yapısında olduğu gibi en son eklenen elemanı alırsınız.
+Ama bir fark vardır ki o da aldığınız bu eleman o iş parçacığında eklenen son elemandır. 
+Eğer ki o iş parçacığından eklenen eleman sayısı sıfır ise bu durumda rastgele olarak diğer iş parçacıklarından rastgele birinin listesindeki son elemanı almaya çalışacaktır. 
+İşte sadece bu durumda iş parçacıkları arasında bir çekişme olmaktadır ki o da sadece (genel olarak) iki iş parçacığı arasında söz konusu olabilmektedir.
+Yani eğer listeniz ile çalışan örneğin 5 iş parçacığınız var ise ve bunların hepsi bu listeye eleman ekleyip alıyorsa çok büyük ihtimalle bu iş parçacıkları ikili olarak bir çekişmeye gireceklerdir. 
+Oysa bir kuyruk yada yığın listesi kullanıyor olursak tüm iş parçacıkları her zaman çekişme içinde olacaklardır.
+
+Yeni bir eleman eklemek istediğiniz zamanlarda ise neredeyse hiç bir zaman iş parçacıkları arasında bir çekişme söz konusu olmamaktadır (ama buna rağmen yeni eleman ekleme kuyruk sınıfı ile kıyaslandığında yavaş olmaktadır). 
+Aynı şeyi kuyruk (queue) yada yığın (stack) yapıları için söylemek söz konusu değildir. 
+Bu yeni koleksiyonda eğer bir iş parçacığınız eklediğinden daha fazla sayıda eleman işlemeyecek ise okuma işlemi kesinlikle çok efektif ve hızlı çalışacaktır.
+
+ConcurrentBag'ler paralel işlemleriniz çoğunlukla ekleme yaptığı pozisyonlarda veya okuma  ve yazma işlemleri iş parçacıklarınızda dengeli ise çok faydalı olacaktır. 
+Ama unutmayınız ki okuma yaparken ya en son eklenen elemanı yada bir başka iş parçacığı tarafından en son eklenen elemanı alacaksınız. 
+Yani eğer hangi elemanı işlediğiniz önemli değilse ve yukarıda bahsettiğim mantıkta bir programınız var ise mutlaka bu koleksiyonu kullanmalısınız. 
+
+*/
+#endregion
+
+#region TryTake
+//This returns, in the out parameter, the most recently added element. It removes the element from the contents.
+#endregion
+
+#region Thread-safe singleton
+/*
+ Herhangi bir thread paylaşılan nesne ile işi bitene kadar nesneyi kilitlemektedir ve her thread nesnenin instance’ının oluşturulup oluşturulmadığını 
+ her defasında kontrol etmektedir.Bu durum arka planda bellek bariyerlerini ilgilendirir ve bu durumda sadece bir thread’in tek instance oluşturduğundan 
+ emin olunduğu durumdur.Ne yazık ki her instance çağırma durumunda kilitleme (lock) işlemi gerçekleşeceğinden yüksek ölçüde performans kaybı gözlemlenir.
+     
+     */
+#endregion
+
+
+----
+
+
+# Observer Design Pattern
+
+- Doktor hastaneye gelmediğinde ilgili yöneticiye ve  hastalara mesaj gidecektir.
+
+- Yoneticiye bu doktor için randevu randevu alma, hastaya bu doktordan alınan randevusunun iptal edildiği mesajı gitmektedir.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ObserverDesignPattern
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Doctor doctor = new Doctor();
+            doctor.AddObserver(new ManagementObserver());
+            doctor.AddObserver(new PatientObserver());
+
+
+            doctor.SicilNo = "185112012";
+            doctor.Ad = "Yaşam";
+            doctor.Soyad = "İLTEN";
+            doctor.HastaneyeGeldimi = false;
+            Console.ReadKey(true);
+        }
+    }
+
+    abstract public class Observer
+    {
+        public abstract void SendMessage(string sicilNo,string firstName,string lastName);
+    }
+
+    public class ManagementObserver : Observer
+    {
+        public override void SendMessage(string sicilNo, string firstName, string lastName)
+        {
+            Console.WriteLine("Management\nSicil No: {0} \nDoctor {1} {2} didnt come to hospital, dont take appointment.\n",sicilNo,firstName,lastName);
+        }
+
+
+    }
+
+    public class PatientObserver : Observer
+    {
+        public override void SendMessage(string sicilNo, string firstName, string lastName)
+        {
+            Console.WriteLine("Patient \nDoctor {0} {1}  didnt come to hospital,cancelled your appointment",firstName,lastName);
+        }
+    }
+
+
+    public class Doctor
+    {
+        public int Id { get; set; }
+        public string  SicilNo { get; set; }
+        public string TC { get; set; }
+        public string Ad { get; set; }
+        public string Soyad { get; set; }
+
+
+        bool hastaneyeGeldimi { get; set; }
+
+        public bool HastaneyeGeldimi {
+            get { return hastaneyeGeldimi; }
+            set
+            {
+                if (value == false)
+                {
+                    Notify();
+                    hastaneyeGeldimi = value;
+                }
+                else
+                    hastaneyeGeldimi = value;
+            }
+        }
+
+
+        //Subject nesnesi kendisine abone olan gözlemcileri bu koleksiyonda tutacaktır.
+        List<Observer> observers;
+
+        public Doctor()
+        {
+            this.observers = new List<Observer>();
+        }
+        //Gözlemci ekle
+        public void AddObserver(Observer observer)
+        {
+            observers.Add(observer);
+        }
+
+
+        //Herhangi bir güncelleme olursa ilgili gözlemcilere haber verilecek
+        public void Notify()
+        {
+            observers.ForEach(g =>
+            {
+                g.SendMessage(SicilNo, Ad,Soyad);
+            });
+        }
+    }
+
+}
+
+----
+
+
+# Prototype Design Pattern
+
+- Kullanicıları kopyalama işleminde bu design pattern kullanıldı.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Prototype
+{
+    class Program
+    {
+        //Bu tasarım deseni sayesinde yeni user tanımlarında New anahtar sözcüğünü kullanmaya gerek yoktur. 
+        static void Main(string[] args)
+        {
+            User user1 = new User(User.UserTypes.Patient);
+            user1.Id = 1;
+            user1.Name = "Yaşam";
+
+
+            User user2 = user1.ShallowCopy() as User;
+            User user3 = user1.DeepCopy() as User;
+
+            Console.WriteLine("Original");
+            Console.Write("User 1: ");
+            ShowWithFormat(user1);
+            Console.WriteLine("Shallow copy");
+            Console.Write("User 2: ");
+            ShowWithFormat(user2);
+            Console.WriteLine("Deep copy");
+            Console.Write("User 3: ");
+            ShowWithFormat(user3);
+            Console.WriteLine();
+
+            user1.Id = 2;
+            user1.Name = "Ahmet";
+            user1.UserType = User.UserTypes.Doctor;
+
+
+            user2.Name = "Ali";
+            user3.UserType = User.UserTypes.Manager;
+
+            Console.WriteLine("After changes\n");
+            Console.WriteLine("Original");
+            Console.Write("User 1: ");
+            ShowWithFormat(user1);
+            Console.WriteLine("Shallow copy");
+            Console.Write("User 2: "); //reference values have changed
+            ShowWithFormat(user2);
+            Console.WriteLine("Deep copy");
+            Console.Write("User 3: "); //everything was kept the same
+            ShowWithFormat(user3);
+            Console.WriteLine();
+
+            Console.ReadKey();
+
+
+        }
+        public static void ShowWithFormat(User user)
+        {
+            Console.WriteLine("Id :{0} Name:{1} Type:{2} \n", user.Id, user.Name, user.UserType);
+        }
+    }
+
+
+    //İlk yapmamız gereken Prototipi belirten Abstract Class’ını tasarlamaktır.
+    public abstract class Prototype
+    {
+        public abstract User ShallowCopy();
+
+        public abstract User DeepCopy();
+
+
+    }
+
+    //Prototipe ait Class içerisinde bulunan Abstract türündeki ShallowCopy adlı metodumuz geriye Prototip tipinden bir değer döndürmektedir. 
+    //Bu sayede Prototip Class’ımızdan miras alan Class’ların, Prototip Class’ımızın Abstract olması sebebiyle New ile yeni bir nesne oluşturulamayacağından dolayı kendisinin geriye döndürülmesini sağlayacaktır.
+    //Prototip tanımımızı yaptıktan sonra artık üyelerimize ait bilgilerin tutulacağı sınıfımızı tasarlayabiliriz.
+
+    //User sınıfında miras aldığımız Prototipimiz içerisinde bulunan Abstract türündeki ShallowCopy metodunu ezerek içerisinde sınıfı tüm özellikleriyle kopyalamayı sağlayan MemberwiseClone metodunu kullandık.
+    //Ancak MemberwiseClone metodu Object tipinden veri döndürdüğü için ve bizim döndürmemiz gereken tip Class’ın kendi tipi olması gerektiğinden dolayı as User komutu ile bu problemi çözüyoruz.
+    public class User : Prototype
+    {
+        public enum UserTypes
+        {
+            Patient,
+            Doctor,
+            Manager
+        }
+
+
+        public int Id { get; set; }
+        public UserTypes UserType { get; set; }
+
+        public string Name { get; set; }
+
+        public User(UserTypes userType)
+        {
+            UserType = userType;
+        }
+        public override User ShallowCopy()
+        {
+            return (User)this.MemberwiseClone();
+        }
+
+        public override User DeepCopy()
+        {
+            User clone = (User)this.MemberwiseClone();
+            clone.Name = String.Copy(Name);
+            return clone;
+        }
+
+
+    }
+}
+
+
+#region Shallow Copy
+/*Nesnenin üye elemanlarını kopyalar.
+ * Eğer bu üye eleman Değer tipinde ise bit bit kopyalama işlemi gerçekleştirilir.
+ * Eğer üye eleman referans tipinde ise referans kopyalanır fakat referansın gösterdiği veri kümesi kopyalanmaz.
+ * Orjinal nesne ve Kopyalanmış nesnede yer alan referans tipi üye eleman bellekte aynı veri kümesine işaret eder.
+ * Kopyalama işlemi static üye elemanları için geçersizdir.
+ * Shallow copy için .NET MemberwiseClone metodu sunar.
+*/
+#endregion
+
+#region Deep Copy
+/*
+ Nesnenin bütün değer ve referans üye elemanlarını bit bit kopyalama işlemine denir. 
+ Deep copy işlemini kendimiz yazmamız gerekmektedir. 
+ Deep copy için .Net in sunduğu herhangi bir sınıf metod bulunmamaktadır.
+
+     */
+#endregion
+----
+
+
+# Singleton Design Pattern
+
+
+- Dosya ekleme işleminde singleton design pattern kullanıldı.
+
+- Kullanılma amacı; dosya eklenirken her defasında nesne oluşturmaktansa bir kez oluşturulup her dosya işlemi için bu nesne kullanılır. Her seferinde yeni nesne oluşturulmasına gerek yoktur bu gibi durumlarda.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using HastaneRandevuSistemi.Models;
+
+namespace HastaneRandevuSistemi.Services.ImportExport
+{
+    public class ImportManager
+    {
+        private static ImportManager _instance;
+        HastaneRandevuSistemiContext db = new HastaneRandevuSistemiContext();
+        private ImportManager()
+        {
+
+        }
+
+        public static ImportManager GetInstance()
+        {
+            if (_instance == null)
+                _instance = new ImportManager();
+
+            return _instance;
+        }
+
+        public bool ImportFile(MyFile file)
+        {
+            bool state = true;
+
+            if (file == null)
+                state = false;
+
+            try
+            {
+                db.MyFiles.Add(file);
+                state = true;
+            }
+            catch (Exception)
+            {
+                state = false;
+            }
+
+            return state;
+
+        }
+    }
+}
+----
+
+
