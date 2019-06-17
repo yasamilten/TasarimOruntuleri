@@ -1,1 +1,122 @@
 # Mediator Design Pattern
+
+- Hastanelerden belirtilen saatte randevu isteyen birden fazla hasta olursa ilk randevuyu isteyen kişiye randevu oluşturulur,o saatter-ki randevu dolduğu için diğer isteyenlere verilmez o saatteki randevu.
+
+[source,c#]
+----
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MediatorDesignPattern
+{
+    class MediatorDesignPattern
+    {
+        static void Main(string[] args)
+        {
+            //ilk olarak hastaların bağlı olacağı Hastaneler(yöneticiler) oluşturulur
+            IYonetici yonetici = new YasamHastanesi();
+            //Hasta nesneleri oluşturulur.
+            AbsHasta hasta_01 = new YasamHastanesiHastasi { hastaTC = "1234567890" };
+            AbsHasta hasta_02 = new YasamHastanesiHastasi { hastaTC = "9876543210" };
+
+
+            //hasta nesneleri Yonetici nesnesine kayıt ettirilir.
+            //Hasta nesnesindeki IliskiliYonetici nesnesi yoneticş nesnesindeki HastaKayit metodunda yapılır.
+            yonetici.HastaKayit(hasta_01);
+            yonetici.HastaKayit(hasta_02);
+
+            //sadece ilk randevu isteyene o saatteki randevu verilir.
+            hasta_01.RandevuOnayIste();
+            hasta_02.RandevuOnayIste();
+
+            Console.ReadKey();
+        }
+    }
+
+    //Mediator
+      interface IYonetici
+    {
+        //Yoneticinin gerçekleştirmesi gereken işlemler
+         void HastaKayit(AbsHasta hasta);
+         void RandevuOnayVer(string hastaTC);
+
+
+    }
+
+    //Colleague 
+     abstract class AbsHasta
+    {
+
+        //Hastanın hangi yonetici ile irtibata geçmesi gerektiğini tutması gerekir.
+        public IYonetici IliskiliYonetici { get; set; }
+        public string hastaTC { get; set; }
+        public bool RandevuOnayi { get; set; }
+
+        public void RandevuOnayIste()
+        {
+            //hastanın bağlı olduğu yöneticiden randevu onayı istiyor
+            IliskiliYonetici.RandevuOnayVer(hastaTC);
+        }
+
+        public virtual void SetRandevuOnayi(bool onay)
+        {
+            //yönetici randevu onayı isteyen hastaya bu metot ile cevap verir.
+            RandevuOnayi = onay;
+            if (RandevuOnayi)
+                Console.WriteLine("Randevu için onay verildi");
+            else
+                Console.WriteLine("Randevu için onay verilmedi.");
+        }
+    }
+
+    //ConcreteMediator yapısı
+    class YasamHastanesi : IYonetici
+    {
+        //Yonetici(hastane) kendisine bağlı olan hastaların bilgisini tutmak zorunda ki isteklere buna göre cevap verebilsin.
+        private List<AbsHasta> _HastaListe= new List<AbsHasta>();
+        public void HastaKayit(AbsHasta _hasta)
+        {
+            _HastaListe.Add(_hasta);
+            //Listeye eklenen AbsHasta nesnesine yöneticisinin bu sınıf olduğunu bildiriyoruz.
+            _hasta.IliskiliYonetici = this;
+        }
+
+   
+        public void RandevuOnayVer(string hastaTC)
+        {
+            bool onay = true;
+            // eğer başka bir hastaya iniş izni verilmedi ise ilk randevu isteyen hastaya izin ver
+            if (_HastaListe.Where(u => u.RandevuOnayi == true).Count() > 0)
+                onay = false;
+            //hastanın cevap alması için barındırdığı metoda cevap verilir.
+            _HastaListe.Where(u => u.hastaTC == hastaTC).Single().SetRandevuOnayi(onay);
+        }
+    }
+
+    //ConcreteColleague1
+    class YasamHastanesiHastasi : AbsHasta
+    {
+        //SetRandevuOnayi metotu AbsHasta abstract sınıfından gelir.
+        //Yonetici cevabı mu metot ile verir.
+        public override void SetRandevuOnayi(bool onay)
+        {
+            Console.WriteLine("TC:{0} li hasta randevu onay bekliyor.", hastaTC);
+            base.SetRandevuOnayi(onay);
+        }
+    }
+
+    #region Mediator Design Pattern
+    /* 
+     mediator tasarım deseninde 4 temel yapı bulunur.
+    - Mediator: Nesneler arasındaki ilişkiyi sağlayacak metotların tanımlı olduğu arayüz. 
+    - ConcreteMediator: Nesneler arasındaki ilişkiyi sağlayacak gerçek nesnedir. Mediator arayüzünü uygular. İçinde Colleague ara yüzünden türeyen nesnelerin listesini barındırır.
+    - Colleague: ConcreteMediator u kullanarak işlem gerçekleştirecek olan nesnelerin uygulaması gereken arayüzü temsil eder. Kendi içinde ConcreteMediator nesnesi barındırır.
+    - ConcreteColleague: ConcreteMediator üzerinden birbirleri ile ilişkili nesnelerdir. Colleague arayüzünü uygularlar.
+     */
+    #endregion
+}
+
+----
